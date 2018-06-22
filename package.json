@@ -1,12 +1,9 @@
 {
 	"name": "bcbp",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "Encoding/decoding library for the IATA Bar Coded Boarding Pass",
 	"main": "index.js",
-	"repository": {
-		"type": "git",
-		"url": "git+https://bitbucket.org/bmiregional/bcbp.git"
-	},
+	"repository": "bitbucket:bmiregional/bcbp",
 	"scripts": {
 		"test": "mocha"
 	},
