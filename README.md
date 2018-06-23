@@ -27,7 +27,7 @@ console.log(output.passengerName); // DESMARAIS/LUC
 
 ### .encode(`object`)
 
-Converts an object to a BCBP string
+Converts an object to a BCBP string. Any of the following parameters can be skipped (except legs).
 
 #### Object
 
@@ -48,6 +48,8 @@ Converts an object to a BCBP string
 |legs|Repeatable legs data|<ul><li>Array - See table below</li></ul>|
 
 #### Legs
+
+Any of the following parameters can be skipped.
 
 |Name|Description|Example values|
 |----|----|----|
