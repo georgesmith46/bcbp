@@ -7,28 +7,38 @@ const hexToDecimal = hex => parseInt(hex, 16);
 const getValue = (field, value) => {
 	if (value === "") return "";
 
-	if (field.type === "date") {
-		return moment.utc(value, "DDDD", true).toISOString();
-	}
-	if (field.type === "dateWithYear") {
-		let year = value.substr(0, 1),
-			dayOfYear = value.substr(1),
-			currentYear = moment.utc().format("YY");
+	let estimatedDate,
+		difference;
 
-		let estimatedYear = moment.utc(currentYear.substr(0, 1) + year, "YY", true)
-			, difference = estimatedYear.diff(moment.utc(), "years");
+	switch (field.type) {
+		case "date":
+			estimatedDate = moment.utc(moment.utc().format("YY") + value, "YYDDDD", true);
+			difference = moment.utc().diff(estimatedDate, "months");
 
-		if (difference > 2) {
-			estimatedYear.subtract(10, "years");
-		}
+			// Estimate the year for this date.
+			// If the estimated date is too far in the past, add a year.
+			if (difference > 10) {
+				estimatedDate.add(1, "year");
+			}
 
-		return moment.utc(estimatedYear.format("YY") + dayOfYear, "YYDDDD", true).toISOString();
-	}
-	else if (field.type === "boolean") {
-		return value === "Y";
-	}
-	else {
-		return value;
+			return estimatedDate.toISOString();
+		case "dateWithYear":
+			let year = value.substr(0, 1),
+				dayOfYear = value.substr(1),
+				currentYear = moment.utc().format("YY");
+
+			estimatedDate = moment.utc(currentYear.substr(0, 1) + year + dayOfYear, "YYDDDD", true);
+			difference = estimatedDate.diff(moment.utc(), "years");
+
+			if (difference > 2) {
+				estimatedDate.subtract(10, "years");
+			}
+
+			return estimatedDate.toISOString();
+		case "boolean":
+			return value === "Y";
+		default:
+			return value;
 	}
 };
 
