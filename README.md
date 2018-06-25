@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/georgesmith46/bcbp.svg?branch=master)](https://travis-ci.org/georgesmith46/bcbp)
+
 # BCBP
 
 Encoding/decoding library for the IATA Bar Coded Boarding Pass
