@@ -109,7 +109,7 @@ module.exports = data => {
 	if (!data) {
 		throw "No data specified";
 	}
-	if (!Array.isArray(data.legs) || !data.legs.length) {
+	if (!Array.isArray(data.legs)) {
 		throw "Missing legs parameter";
 	}
 

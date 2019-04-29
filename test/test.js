@@ -145,6 +145,15 @@ describe("encode", function () {
 			assert.equal(encode(input), expected);
 		});
 	});
+	describe("no data", function () {
+		const expected = ""
+			, input = {
+			legs: []
+		};
+		it(`should output ""`, function () {
+			assert.equal(encode(input), expected);
+		});
+	});
 });
 
 describe("decode", function () {
