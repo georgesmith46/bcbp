@@ -84,11 +84,14 @@ const parseField = (fields, barcodeString, output, field, legIndex) => {
 };
 
 module.exports = barcodeString => {
-	let legs = barcodeString.substr(1,1);
+	let legs = +barcodeString.substr(1,1);
 
 	let output = {legs: []};
 
 	for (let i = 0; i < legs; i++) {
+		// Start the leg with an empty object
+		output.legs.push({});
+
 		for (let field of fields.filter(f => !f.isSecurityField && (i === 0 || !f.unique))) {
 			let fieldLength = parseField(fields, barcodeString, output, field, i);
 			barcodeString = barcodeString.substr(fieldLength);

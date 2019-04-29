@@ -1,4 +1,4 @@
-const assert = require("assert")
+const assert = require("assert").strict
 	, encode = require("../encode")
 	, decode = require("../decode");
 
@@ -121,6 +121,30 @@ describe("encode", function () {
 			assert.equal(encode(input), expected);
 		});
 	});
+	describe("no security data type", function () {
+		const expected = "M1DESMARAIS/LUC       EABC123 YULFRAAC 0834 226F001A0025 106>60000^164GIWVC5EH7JNT684FVNJ91W2QA4DVN5J8K4F0L0GEQ3DF5TGBN8709HKT5D3DW3GBHFCVHMY7J5T6HFR41W2QA4DVN5J8K4F0L0GE"
+			, input = {
+			passengerName: "DESMARAIS/LUC",
+			legs: [
+				{
+					operatingCarrierPNR: "ABC123",
+					departureAirport: "YUL",
+					arrivalAirport: "FRA",
+					operatingCarrierDesignator: "AC",
+					flightNumber: "0834",
+					flightDate: "226",
+					compartmentCode: "F",
+					seatNumber: "001A",
+					checkInSequenceNumber: "0025",
+					passengerStatus: "1",
+				}
+			],
+			securityData: "GIWVC5EH7JNT684FVNJ91W2QA4DVN5J8K4F0L0GEQ3DF5TGBN8709HKT5D3DW3GBHFCVHMY7J5T6HFR41W2QA4DVN5J8K4F0L0GE"
+		};
+		it(`should output ${expected}`, function () {
+			assert.equal(encode(input), expected);
+		});
+	});
 });
 
 describe("decode", function () {
@@ -161,6 +185,18 @@ describe("decode", function () {
 		});
 		it(`security data should equal GIWVC5EH7JNT684FVNJ91W2QA4DVN5J8K4F0L0GEQ3DF5TGBN8709HKT5D3DW3GBHFCVHMY7J5T6HFR41W2QA4DVN5J8K4F0L0GE`, function () {
 			assert.equal(decode(input).securityData, "GIWVC5EH7JNT684FVNJ91W2QA4DVN5J8K4F0L0GEQ3DF5TGBN8709HKT5D3DW3GBHFCVHMY7J5T6HFR41W2QA4DVN5J8K4F0L0GE");
+		});
+	});
+	describe("empty first leg", function () {
+		const input = "M2DESMARAIS/LUC       E                                   06>60000ABC123 YULFRAAC 0834 226F001A0025 10200";
+		it(`number of legs should equal 2`, function () {
+			assert.equal(decode(input).legs.length, 2);
+		});
+		it(`PNR of first leg should equal undefined`, function () {
+			assert.equal(decode(input).legs[0].operatingCarrierPNR, undefined);
+		});
+		it(`PNR of second leg should equal ABC123`, function () {
+			assert.equal(decode(input).legs[1].operatingCarrierPNR, "ABC123");
 		});
 	});
 });

@@ -317,7 +317,7 @@ module.exports = [
 		unique: true,
 		isSecurityField: true,
 		length: 1,
-		default: ""
+		default: "1"
 	},
 	{
 		name: "securityDataSize",

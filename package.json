@@ -1,6 +1,6 @@
 {
 	"name": "bcbp",
-	"version": "1.0.5",
+	"version": "1.0.6",
 	"description": "Encoding/decoding library for the IATA Bar Coded Boarding Pass",
 	"main": "index.js",
 	"repository": "github:georgesmith46/bcbp",
@@ -8,8 +8,7 @@
 		"test": "mocha"
 	},
 	"author": {
-		"name": "George Smith",
-		"email": "george.smith@flybmi.com"
+		"name": "George Smith"
 	},
 	"license": "GPL-3.0-only",
 	"dependencies": {
