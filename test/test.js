@@ -3,6 +3,17 @@ const assert = require("assert").strict
 	, decode = require("../decode");
 
 describe("encode", function () {
+	describe("minimal", function () {
+		const expected = "M1                    E                                   30>6002A                                         N"
+			, input = {
+			legs: [
+				{ fastTrack: false }
+			]
+		};
+		it(`should output ${expected}`, function () {
+			assert.equal(encode(input), expected);
+		});
+	});
 	describe("basic", function () {
 		const expected = "M1DESMARAIS/LUC       EABC123 YULFRAAC 0834 226F001A0025 106>60000"
 			, input = {

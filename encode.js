@@ -36,7 +36,8 @@ const getFieldValue = (fields, data, field) => {
 			let fieldIndex = fields.findIndex(x => x.name === field.name);
 
 			for (let i = fieldIndex; i < fields.length; i++) {
-				if (data[fields[i].name]) {
+				const value = data[fields[i].name];
+				if ((typeof value !== "undefined") && (value !== null) && (value !== "")) {
 					emptyValue = addPadding("", field.length, true);
 					break;
 				}
