@@ -31,7 +31,7 @@ const getValue = (field, value) => {
 			difference = estimatedDate.diff(moment.utc(), "years");
 
 			if (difference > 2) {
-				estimatedDate.subtract(10, "years");
+				estimatedDate = moment.utc(estimatedDate.subtract(10, "years").format("YY") + dayOfYear, "YYDDDD", true);
 			}
 
 			return estimatedDate.toISOString();
