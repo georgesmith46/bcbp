@@ -18,7 +18,7 @@ const getValue = (field, value) => {
 			// Estimate the year for this date.
 			// If the estimated date is too far in the past, add a year.
 			if (difference > 10) {
-				estimatedDate.add(1, "year");
+				estimatedDate = moment.utc(estimatedDate.add(1, "year").format("YY") + value, "YYDDDD", true);
 			}
 
 			return estimatedDate.toISOString();
