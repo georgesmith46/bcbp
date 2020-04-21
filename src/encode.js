@@ -58,7 +58,7 @@ const getFieldValue = (fields, data, field) => {
   if (
     value &&
     value.length !== field.length &&
-    ["date", "dateWithYear"].indexOf(field.type) !== -1
+    ["date", "dateWithYear"].includes(field.type)
   ) {
     let date = moment.utc(value, moment.ISO_8601, true);
     if (date.isValid()) {
