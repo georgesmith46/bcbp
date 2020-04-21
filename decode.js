@@ -59,7 +59,7 @@ const getValue = (field, value) => {
 
 // Adds the field value to the output and removes it from the barcode string
 // Recursive function which loops through the fields tree
-const parseField = (fields, barcodeString, output, field, legIndex) => {
+const parseField = (barcodeString, output, field, legIndex) => {
   let fieldLength = field.length || barcodeString.length,
     value = barcodeString.substr(0, fieldLength).trim();
 
@@ -91,7 +91,6 @@ const parseField = (fields, barcodeString, output, field, legIndex) => {
       if (sectionString === "") break;
 
       let subFieldLength = parseField(
-        field.fields,
         sectionString,
         output,
         subField,
@@ -117,7 +116,7 @@ module.exports = (barcodeString) => {
     for (let field of fields.filter(
       (f) => !f.isSecurityField && (i === 0 || !f.unique)
     )) {
-      let fieldLength = parseField(fields, barcodeString, output, field, i);
+      let fieldLength = parseField(barcodeString, output, field, i);
       barcodeString = barcodeString.substr(fieldLength);
     }
   }
@@ -125,7 +124,7 @@ module.exports = (barcodeString) => {
   // Security data needs to be decoded last
   if (barcodeString.startsWith("^")) {
     for (let field of fields.filter((f) => f.isSecurityField)) {
-      let fieldLength = parseField(fields, barcodeString, output, field, 0);
+      let fieldLength = parseField(barcodeString, output, field, 0);
       barcodeString = barcodeString.substr(fieldLength);
     }
   }
