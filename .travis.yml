@@ -8,6 +8,6 @@ jobs:
       node_js: lts/*
       deploy:
         provider: script
-        skip_cleanup: true
+        cleanup: false
         script:
           - npx semantic-release
