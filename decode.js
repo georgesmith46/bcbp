@@ -1,5 +1,5 @@
-const moment = require("moment"),
-  fields = require("./fields");
+const moment = require("moment");
+const fields = require("./fields");
 
 const hexToDecimal = (hex) => parseInt(hex, 16);
 

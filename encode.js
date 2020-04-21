@@ -1,5 +1,5 @@
-const moment = require("moment"),
-  fields = require("./fields");
+const moment = require("moment");
+const fields = require("./fields");
 
 const decimalToHex = (decimal) =>
   decimal.toString(16).padStart(2, "0").toUpperCase();
