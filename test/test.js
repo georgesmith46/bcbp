@@ -180,8 +180,14 @@ describe("decode", function () {
     it(`number of legs should equal 1`, function () {
       assert.equal(decode(input).legs.length, 1);
     });
+    it(`PNR should equal ABC123`, function () {
+      assert.equal(decode(input).legs[0].operatingCarrierPNR, "ABC123");
+    });
     it(`departure airport should equal YUL`, function () {
       assert.equal(decode(input).legs[0].departureAirport, "YUL");
+    });
+    it(`arrival airport should equal FRA`, function () {
+      assert.equal(decode(input).legs[0].arrivalAirport, "FRA");
     });
   });
   describe("random", function () {
