@@ -3,11 +3,11 @@ node_js:
   - "node"
 
 jobs:
-include:
-  - stage: release
-    node_js: lts/*
-    deploy:
-      provider: script
-      skip_cleanup: true
-      script:
-        - npx semantic-release
+  include:
+    - stage: release
+      node_js: lts/*
+      deploy:
+        provider: script
+        skip_cleanup: true
+        script:
+          - npx semantic-release
