@@ -115,22 +115,24 @@ module.exports = (data) => {
   if (!data) {
     throw "No data specified";
   }
-  if (!Array.isArray(data.legs)) {
-    throw "Missing legs parameter";
-  }
 
-  fields.filter((x) => x.name === "numberOfLegs")[0].default = data.legs.length;
+  const numberOfLegs = data.legs && data.legs.length;
+
+  fields.filter((x) => x.name === "numberOfLegs")[0].default =
+    numberOfLegs || 0;
 
   let elements = [];
   let legIndex = 0;
 
-  for (let leg of data.legs) {
-    for (let field of fields.filter(
-      (f) => !f.isSecurityField && (legIndex === 0 || !f.unique)
-    )) {
-      elements = addField(fields, elements, data, leg, field, legIndex);
+  if (data.legs) {
+    for (let leg of data.legs) {
+      for (let field of fields.filter(
+        (f) => !f.isSecurityField && (legIndex === 0 || !f.unique)
+      )) {
+        elements = addField(fields, elements, data, leg, field, legIndex);
+      }
+      legIndex++;
     }
-    legIndex++;
   }
 
   // Security data needs to be added last

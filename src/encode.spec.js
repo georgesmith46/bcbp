@@ -1,6 +1,13 @@
 const encode = require("./encode");
 
 describe("encode", () => {
+  describe("empty", () => {
+    const expected = "",
+      input = {};
+    it(`should output ${expected}`, () => {
+      expect(encode(input)).toEqual(expected);
+    });
+  });
   describe("minimal", () => {
     const expected =
         "M1                    E                                   30>6002A                                         N",
