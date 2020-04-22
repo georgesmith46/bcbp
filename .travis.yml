@@ -6,6 +6,9 @@ jobs:
   include:
     - stage: release
       node_js: lts/*
+      on:
+        tags: true
+        all_branches: true
       deploy:
         provider: script
         cleanup: false
