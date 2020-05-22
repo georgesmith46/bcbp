@@ -4,7 +4,7 @@ node_js:
 
 jobs:
   include:
-    - stage: build
+    - stage: release
       node_js: lts/*
       on:
         tags: true
@@ -14,13 +14,4 @@ jobs:
         skip_cleanup: true
         script:
           - npm run build
-    - stage: release
-      node_js: lts/*
-      on:
-        tags: true
-        all_branches: true
-      deploy:
-        provider: script
-        cleanup: false
-        script:
           - npx semantic-release
