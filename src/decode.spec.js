@@ -1,9 +1,13 @@
+import moment from "moment";
 import decode from "./decode";
 
 describe("decode", () => {
   describe("basic", () => {
     const input =
       "M1DESMARAIS/LUC       EABC123 YULFRAAC 0834 226F001A0025 106>60000";
+
+    const expectedFlightDate = moment.utc(226, "DDD").toISOString();
+
     it(`should have expected output`, () => {
       expect(decode(input)).toEqual({
         legs: [
@@ -13,7 +17,7 @@ describe("decode", () => {
             arrivalAirport: "FRA",
             operatingCarrierDesignator: "AC",
             flightNumber: "0834",
-            flightDate: "2020-08-13T00:00:00.000Z",
+            flightDate: expectedFlightDate,
             compartmentCode: "F",
             seatNumber: "001A",
             checkInSequenceNumber: "0025",
@@ -35,7 +39,7 @@ describe("decode", () => {
             operatingCarrierPNR: "ABC123",
             arrivalAirport: "FRA",
             operatingCarrierDesignator: "AC",
-            flightDate: "2020-08-13T00:00:00.000Z",
+            flightDate: "2016-08-13T00:00:00.000Z",
             compartmentCode: "F",
             seatNumber: "001A",
             serialNumber: "1234567890",
@@ -72,7 +76,7 @@ describe("decode", () => {
             arrivalAirport: "FRA",
             operatingCarrierDesignator: "AC",
             flightNumber: "0834",
-            flightDate: "2020-08-13T00:00:00.000Z",
+            flightDate: "2016-08-13T00:00:00.000Z",
             compartmentCode: "F",
             seatNumber: "001A",
             checkInSequenceNumber: "0025",
@@ -93,7 +97,7 @@ describe("decode", () => {
             arrivalAirport: "GVA",
             operatingCarrierDesignator: "LH",
             flightNumber: "3664",
-            flightDate: "2020-08-14T00:00:00.000Z",
+            flightDate: "2016-08-14T00:00:00.000Z",
             compartmentCode: "C",
             seatNumber: "012C",
             checkInSequenceNumber: "0002",

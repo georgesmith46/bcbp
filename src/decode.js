@@ -129,5 +129,21 @@ export default (barcodeString) => {
     }
   }
 
+  // Special case for using the issuance year as the source of truth for other dates without a year
+  if (output.issuanceDate) {
+    const issuanceYear = moment.utc(output.issuanceDate).format("YY");
+    for (let leg of output.legs) {
+      const originalFlightDate = moment.utc(leg.flightDate).format("DDDD");
+
+      const estimatedDate = moment.utc(
+        originalFlightDate + issuanceYear,
+        "DDDDYY"
+      );
+
+      if (estimatedDate > originalFlightDate)
+        leg.flightDate = estimatedDate.toISOString();
+    }
+  }
+
   return output;
 };
