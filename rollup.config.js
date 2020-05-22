@@ -16,5 +16,9 @@ export default {
       format: "es",
     },
   ],
-  plugins: [babel({ exclude: "node_modules/**" }), resolve(), commonjs()],
+  plugins: [
+    babel({ exclude: "node_modules/**", babelHelpers: "runtime" }),
+    resolve(),
+    commonjs(),
+  ],
 };
