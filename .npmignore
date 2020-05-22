@@ -35,3 +35,8 @@ jspm_packages/
 .env
 .next
 .idea/
+src/
+bcbp.iml
+rollup.config.js
+.travis.yml
+babel.config.js
