@@ -11,7 +11,7 @@ jobs:
         all_branches: true
       deploy:
         provider: script
-        cleanup: false
+        skip_cleanup: true
         script:
           - npm run build
     - stage: release
