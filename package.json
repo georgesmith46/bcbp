@@ -2,22 +2,32 @@
   "name": "bcbp",
   "version": "0.0.0-semantically-released",
   "description": "Encoding/decoding library for the IATA Bar Coded Boarding Pass",
-  "main": "src/index.js",
+  "main": "./dist/index.umd.js",
+  "module": "./dist/index.esm.js",
   "repository": "github:georgesmith46/bcbp",
   "scripts": {
+    "build": "rollup -c",
     "test": "jest"
   },
   "author": {
     "name": "George Smith"
   },
   "license": "GPL-3.0-only",
+  "sideEffects": false,
   "dependencies": {
+    "@rollup/plugin-commonjs": "^12.0.0",
+    "@rollup/plugin-node-resolve": "^8.0.0",
     "moment": "^2.24.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.9.6",
+    "@babel/preset-env": "^7.9.6",
+    "@rollup/plugin-babel": "^5.0.2",
+    "babel-jest": "^26.0.1",
     "cz-conventional-changelog": "^3.1.0",
     "jest": "^25.4.0",
     "prettier": "^2.0.4",
+    "rollup": "^2.10.7",
     "semantic-release": "^17.0.6"
   },
   "keywords": [

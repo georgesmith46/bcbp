@@ -1,6 +1,6 @@
 // IATA BCBP Version 6
 
-module.exports = [
+export default [
   {
     name: "formatCode",
     type: "string",

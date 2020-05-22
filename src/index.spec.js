@@ -1,5 +1,5 @@
-const encode = require("./encode");
-const decode = require("./decode");
+import encode from "./encode";
+import decode from "./decode";
 
 describe("encode/decode", () => {
   describe("basic", () => {

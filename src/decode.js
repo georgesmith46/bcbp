@@ -1,5 +1,5 @@
-const moment = require("moment");
-const fields = require("./fields");
+import moment from "moment";
+import fields from "./fields";
 
 const hexToDecimal = (hex) => parseInt(hex, 16);
 
@@ -104,7 +104,7 @@ const parseField = (barcodeString, output, field, legIndex) => {
   return fieldLength;
 };
 
-module.exports = (barcodeString) => {
+export default (barcodeString) => {
   let legs = +barcodeString.substr(1, 1);
 
   let output = { legs: [] };

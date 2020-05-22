@@ -1,4 +1,4 @@
-const encode = require("./encode");
+import encode from "./encode";
 
 describe("encode", () => {
   describe("empty", () => {

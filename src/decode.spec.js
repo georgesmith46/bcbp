@@ -1,4 +1,4 @@
-const decode = require("./decode");
+import decode from "./decode";
 
 describe("decode", () => {
   describe("basic", () => {

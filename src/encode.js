@@ -1,5 +1,5 @@
-const moment = require("moment");
-const fields = require("./fields");
+import moment from "moment";
+import fields from "./fields";
 
 const decimalToHex = (decimal) =>
   decimal.toString(16).padStart(2, "0").toUpperCase();
@@ -111,7 +111,7 @@ const addToOutput = (output, element) => {
   return output;
 };
 
-module.exports = (data) => {
+export default (data) => {
   if (!data) {
     throw "No data specified";
   }
