@@ -18,7 +18,6 @@ jobs:
       - checkout
       - node/with-cache:
           steps:
-            - run: npm ci
             - run: npm run build
             - run: npm run release
 workflows:
