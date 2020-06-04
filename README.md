@@ -21,13 +21,11 @@ Installation is done using the
 $ npm install bcbp
 ```
 
-# Methods
-
 ## Encode
 
 ### Parameters
 
-- [BCBP Object](#bcbp-object) - The object to be encoded. Any keys can be omitted.
+- [BCBP object](#bcbp-object) - The object to be encoded. Any keys can be omitted.
 
 ### Return value
 
@@ -68,7 +66,7 @@ console.log(output);
 
 ### Return value
 
-- [BCBP Object](#bcbp-object) - This object schema matches the input of the `encode` method.
+- [BCBP object](#bcbp-object) - This object schema matches the input of the `encode` method.
 
 ### Example
 
