@@ -17,16 +17,16 @@ jobs:
     steps:
       - checkout
       - node/with-cache:
-        steps:
-          - run: npm ci
-          - run: npm run build
-          - run: npm run release
+          steps:
+            - run: npm ci
+            - run: npm run build
+            - run: npm run release
 workflows:
   test-release:
     jobs:
       - test
       - release:
-        filters:
-          branches:
-            only:
-              - master
+          filters:
+            branches:
+              only:
+                - master
