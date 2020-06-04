@@ -21,20 +21,18 @@ Installation is done using the
 $ npm install bcbp
 ```
 
-## Methods
+## Encode
 
-### Encode
+### Parameters
 
-#### Parameters
-
-- bcbpData Object
+- `bcbpData Object`
   - The object to be encoded. Any keys can be omitted.
 
-#### Return value
+### Return value
 
-BCBP string. This is **not** encoded into a barcode.
+`BCBP string`. This is **not** encoded into a barcode.
 
-#### Example
+### Example
 
 ```js
 import { encode } from "bcbp";
@@ -61,18 +59,18 @@ console.log(output);
 // M1DESMARAIS/LUC       EABC123 YULFRAAC 0834 226F001A0025 100
 ```
 
-### Decode
+## Decode
 
-#### Parameters
+### Parameters
 
-- BCBP string
+- `BCBP string`
   - The string to be decoded.
 
-#### Return value
+### Return value
 
-bcbpData Object.
+`bcbpData Object`
 
-#### Example
+### Example
 
 ```js
 import { decode } from "bcbp";
