@@ -14,11 +14,61 @@ Encoding/decoding library for the IATA Bar Coded Boarding Pass
 
 ### Installation
 
-Add BCBP to your project by executing `npm install bcbp`.
+Installation is done using the
+[`npm install` command](https://docs.npmjs.com/getting-started/installing-npm-packages-locally):
 
-### Usage
+```bash
+$ npm install bcbp
+```
 
-Here's an example of basic usage:
+## Encode
+
+### Parameters
+
+- [BCBP object](#bcbp-object) - The object to be encoded. Any keys can be omitted.
+
+### Return value
+
+- [BCBP string](#bcbp-string) - This is **not** encoded into a barcode.
+
+### Example
+
+```js
+import { encode } from "bcbp";
+
+let output = encode({
+  legs: [
+    {
+      operatingCarrierPNR: "ABC123",
+      departureAirport: "YUL",
+      arrivalAirport: "FRA",
+      operatingCarrierDesignator: "AC",
+      flightNumber: "0834",
+      flightDate: "2020-08-13T00:00:00.000Z",
+      compartmentCode: "F",
+      seatNumber: "001A",
+      checkInSequenceNumber: "0025",
+      passengerStatus: "1",
+    },
+  ],
+  passengerName: "DESMARAIS/LUC",
+});
+
+console.log(output);
+// M1DESMARAIS/LUC       EABC123 YULFRAAC 0834 226F001A0025 100
+```
+
+## Decode
+
+### Parameters
+
+- [BCBP string](#bcbp-string) - The string to be decoded.
+
+### Return value
+
+- [BCBP object](#bcbp-object) - This object schema matches the input of the `encode` method.
+
+### Example
 
 ```js
 import { decode } from "bcbp";
@@ -27,116 +77,130 @@ let output = decode(
   "M1DESMARAIS/LUC       EABC123 YULFRAAC 0834 226F001A0025 100"
 );
 
-console.log(output.passengerName); // DESMARAIS/LUC
+console.log(output.passengerName);
+// DESMARAIS/LUC
 ```
 
-## User guide
+# BCBP Object
 
-### .encode(`object`)
-
-Converts an object to a BCBP string. Any of the following parameters can be skipped (except legs).
-
-#### Object
-
-| Name                         | Description                                          | Example values                                                                                                                                                                                                                |
-| ---------------------------- | ---------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| passengerName                | Passenger Name                                       | <ul><li>DESMARAIS/LUC</li><li>DOE/JOHN</li></ul>                                                                                                                                                                              |
-| passengerDescription         | Passenger Description                                | <ul><li>0 - Adult</li><li>1 - Male</li><li>2 - Female</li><li>3 - Child</li><li>4 - Infant</li><li>5 - No passenger (cabin baggage)</li><li>6 - Adult travelling with infant</li><li>7 - Unaccompanied minor</li></ul>        |
-| checkInSource                | Source of check-in                                   | <ul><li>W - Web</li><li>K - Airport Kiosk</li><li>R - Remote or Off Site Kiosk</li><li>M - Mobile Device</li><li>O - Airport Agent</li><li>T - Town Agent</li><li>V - Third Party Vendor</li></ul>                            |
-| boardingPassIssuanceSource   | Source of Boarding Pass Issuance                     | <ul><li>W - Web</li><li>K - Airport Kiosk</li><li>X - Transfer Kiosk</li><li>R - Remote or Off Site Kiosk</li><li>M - Mobile Device</li><li>O - Airport Agent</li><li>T - Town Agent</li><li>V - Third Party Vendor</li></ul> |
-| issuanceDate                 | Date of Issue of Boarding Pass                       | <ul><li>6225</li><li>ISO 8601 formatted string</li><li>Moment.js object</li><li>JavaScript date object</li></ul>                                                                                                              |
-| documentType                 | Document Type                                        | <ul><li>B - Boarding Pass</li><li>I - Itinery Receipt</li></ul>                                                                                                                                                               |
-| boardingPassIssuerDesignator | Airline Designator of boarding pass issuer           | <ul><li>AC</li></ul>                                                                                                                                                                                                          |
-| baggageTagNumber             | Baggage Tag Licence Plate Number(s)                  | <ul><li>0014123456003</li></ul>                                                                                                                                                                                               |
-| firstBaggageTagNumber        | 1st Non-Consecutive Baggage Tag Licence Plate Number | <ul><li>0014123456003</li></ul>                                                                                                                                                                                               |
-| secondBaggageTagNumber       | 2nd Non-Consecutive Baggage Tag Licence Plate Number | <ul><li>0014123456003</li></ul>                                                                                                                                                                                               |
-| securityDataType             | Type of Security Data                                | <ul><li>1</li></ul>                                                                                                                                                                                                           |
-| securityData                 | Security Data                                        | <ul><li>GIWVC5EH7JNT...</li></ul>                                                                                                                                                                                             |
-| legs                         | Repeatable legs data                                 | <ul><li>Array - See table below</li></ul>                                                                                                                                                                                     |
-
-#### Legs
-
-Any of the following parameters can be skipped.
-
-| Name                                   | Description                              | Example values                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| -------------------------------------- | ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| operatingCarrierPNR                    | Operating carrier PNR Code               | <ul><li>ABC123</li></ul>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| departureAirport                       | From City Airport Code                   | <ul><li>YUL</li></ul>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
-| arrivalAirport                         | To City Airport Code                     | <ul><li>FRA</li></ul>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
-| operatingCarrierDesignator             | Operating carrier Designator             | <ul><li>AC</li></ul>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
-| flightNumber                           | Flight Number                            | <ul><li>0834</li></ul>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-| flightDate                             | Date of Flight                           | <ul><li>226</li><li>ISO 8601 formatted string</li><li>Moment.js object</li><li>JavaScript date object</li></ul>                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| compartmentCode                        | Compartment Code                         | <ul><li>F</li></ul>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
-| seatNumber                             | Seat Number                              | <ul><li>001A</li></ul>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-| checkInSequenceNumber                  | Check-in Sequence Number                 | <ul><li>0025</li></ul>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-| passengerStatus                        | Passenger Status                         | <ul><li>0 - Ticket issuance/passenger not checked in</li><li>1 - Ticket issuance/passenger checked in</li><li>2 - Bag checked/passenger not checked in</li><li>3 - Bag checked/passenger checked in</li><li>4 - Passenger passed security check</li><li>5 - Passenger passed security gate exit (coupon used)</li><li>6 - Transit</li><li>7 - Standby</li><li>8 - Boarding data revalidation done</li><li>9 - Original boarding line used at time of ticket issuance</li><li>A - Up- or down-grading required at close out</li></ul> |
-| airlineNumericCode                     | Airline Numeric Code                     | <ul><li>014</li></ul>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
-| serialNumber                           | Document Form/Serial Number              | <ul><li>1234567890</li></ul>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-| selecteeIndicator                      | Selectee indicator                       | <ul><li>0</li></ul>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
-| internationalDocumentationVerification | International Documentation Verification | <ul><li>0 - Travel document verification not required</li><li>1 - Travel document verification required</li><li>2 - Travel document verification performed</li></ul>                                                                                                                                                                                                                                                                                                                                                                 |
-| marketingCarrierDesignator             | Marketing carrier designator             | <ul><li>AC</li></ul>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
-| frequentFlyerAirlineDesignator         | Frequent Flyer Airline Designator        | <ul><li>AC</li></ul>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
-| frequentFlyerNumber                    | Frequent Flyer Number                    | <ul><li>1234567890123</li></ul>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| idIndicator                            | ID/AD Indicator                          | <ul><li>0</li></ul>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
-| freeBaggageAllowance                   | Free Baggage Allowance                   | <ul><li>20K</li></ul>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
-| fastTrack                              | Fast Track                               | <ul><li>Y</li><li>N</li><li>true</li><li>false</li></ul>                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| airlineInfo                            | For individual airline use               | <ul><li>LX58Z</li></ul>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
-
-#### Demo
+An object which is be passed as input to the `encode` method and is the return value of the `decode` method.
 
 ```js
-let output = encode({
+const bcbpObject = {
+  // Passenger Name (string)
   passengerName: "DESMARAIS/LUC",
+
+  // Passenger Description (string)
+  passengerDescription: "1",
+
+  // Source of check-in (string)
+  checkInSource: "W",
+
+  // Source of Boarding Pass Issuance (string)
+  boardingPassIssuanceSource: "W",
+
+  // Date of Issue of Boarding Pass (ISO date string, JavaScript Date, Moment.js object)
+  issuanceDate: "2016-08-12T00:00:00.000Z",
+
+  // Document Type (string)
+  documentType: "B",
+
+  // Airline Designator of boarding pass issuer (string)
+  boardingPassIssuerDesignator: "AC",
+
+  // Baggage Tag Licence Plate Number(s) (string)
+  baggageTagNumber: "0014123456003",
+
+  // 1st Non-Consecutive Baggage Tag Licence Plate Number (string)
+  firstBaggageTagNumber: "0014123456003",
+
+  // 2nd Non-Consecutive Baggage Tag Licence Plate Number (string)
+  secondBaggageTagNumber: "0014123456003",
+
+  // Type of Security Data (string)
+  securityDataType: "1",
+
+  // Security Data (string)
+  securityData:
+    "GIWVC5EH7JNT684FVNJ91W2QA4DVN5J8K4F0L0GEQ3DF5TGBN8709HKT5D3DW3GBHFCVHMY7J5T6HFR41W2QA4DVN5J8K4F0L0GE",
+
+  // Repeatable legs data (array)
   legs: [
     {
+      // Operating carrier PNR Code (string)
       operatingCarrierPNR: "ABC123",
+
+      // From City Airport Code (string)
       departureAirport: "YUL",
+
+      // To City Airport Code (string)
       arrivalAirport: "FRA",
+
+      // Operating carrier Designator (string)
       operatingCarrierDesignator: "AC",
+
+      // Flight Number (string)
       flightNumber: "0834",
-      flightDate: "226",
+
+      // Date of Flight (ISO date string, JavaScript Date, Moment.js object)
+      flightDate: "2016-08-13T00:00:00.000Z",
+
+      // Compartment Code (string)
       compartmentCode: "F",
+
+      // Seat Number (string)
       seatNumber: "001A",
+
+      // Check-in Sequence Number (string)
       checkInSequenceNumber: "0025",
+
+      // Passenger Status (string)
       passengerStatus: "1",
+
+      // Airline Numeric Code (string)
+      airlineNumericCode: "014",
+
+      // Document Form/Serial Number (string)
+      serialNumber: "1234567890",
+
+      // Selectee indicator (string)
+      selecteeIndicator: "0",
+
+      // International Documentation Verification (string)
+      internationalDocumentationVerification: "1",
+
+      // Marketing carrier designator (string)
+      marketingCarrierDesignator: "AC",
+
+      // Frequent Flyer Airline Designator (string)
+      frequentFlyerAirlineDesignator: "AC",
+
+      // Frequent Flyer Number (string)
+      frequentFlyerNumber: "1234567890123",
+
+      // ID/AD Indicator (string)
+      idIndicator: "0",
+
+      // Free Baggage Allowance (string)
+      freeBaggageAllowance: "20K",
+
+      // Fast Track (boolean)
+      fastTrack: true,
+
+      // For individual airline use (string)
+      airlineInfo: "LX58Z",
     },
   ],
-});
-
-console.log(output); // M1DESMARAIS/LUC       EABC123 YULFRAAC 0834 226F001A0025 106>60000
+};
 ```
 
-### .decode(`string`)
+# BCBP String
 
-Converts a BCBP string to an object. The returned object uses the same keys as .encode() (see the above tables).
-
-#### Demo
+A string which follows the IATA BCBP version 6 standard.
 
 ```js
-let output = decode(
-  "M1DESMARAIS/LUC       EABC123 YULFRAAC 0834 226F001A0025 106>60000"
-);
-
-console.log(output);
-/*
-{
-	passengerName: 'DESMARAIS/LUC',
-	legs: [
-		{
-			operatingCarrierPNR: 'ABC123',
-			departureAirport: 'YUL',
-			arrivalAirport: 'FRA',
-			operatingCarrierDesignator: 'AC',
-			flightNumber: '0834',
-			flightDate: '2018-08-14T00:00:00.000Z',
-			compartmentCode: 'F',
-			seatNumber: '001A',
-			checkInSequenceNumber: '0025',
-			passengerStatus: '1'
-		}
-	],
-}
-*/
+const bcbpString =
+  "M1DESMARAIS/LUC       EABC123 YULFRAAC 0834 226F001A0025 100";
 ```
 
 ## License
