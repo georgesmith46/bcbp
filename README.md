@@ -138,4 +138,4 @@ console.log(output);
 
 ## License
 
-GNU General Public License v3.0
+MIT
