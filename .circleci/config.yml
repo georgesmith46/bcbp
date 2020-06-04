@@ -11,6 +11,15 @@ jobs:
           steps:
             - run: npm ci
             - run: npm test
+  validate:
+    executor:
+      name: node/default
+    steps:
+      - checkout
+      - node/with-cache:
+          steps:
+            - run: npm ls
+            - run: npm test
   release:
     executor:
       name: node/default
@@ -25,6 +34,7 @@ workflows:
   test-release:
     jobs:
       - test
+      - validate
       - release:
           filters:
             branches:
