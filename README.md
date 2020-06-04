@@ -1,4 +1,7 @@
-[![Build Status](https://travis-ci.org/georgesmith46/bcbp.svg?branch=master)](https://travis-ci.org/georgesmith46/bcbp)
+[![CircleCI](https://circleci.com/gh/georgesmith46/bcbp.svg?style=svg)](https://app.circleci.com/pipelines/github/georgesmith46/bcbp)
+[![License](https://badgen.net/npm/license/bcbp)](LICENSE)
+[![Bundlephobia](https://badgen.net/bundlephobia/minzip/bcbp)](https://bundlephobia.com/result?p=bcbp)
+[![Version](https://badgen.net/npm/v/bcbp)](https://npm.im/bcbp)
 
 # BCBP
 
