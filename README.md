@@ -14,11 +14,65 @@ Encoding/decoding library for the IATA Bar Coded Boarding Pass
 
 ### Installation
 
-Add BCBP to your project by executing `npm install bcbp`.
+Installation is done using the
+[`npm install` command](https://docs.npmjs.com/getting-started/installing-npm-packages-locally):
 
-### Usage
+```bash
+$ npm install bcbp
+```
 
-Here's an example of basic usage:
+## Methods
+
+### Encode
+
+#### Parameters
+
+- bcbpData Object
+  - The object to be encoded. Any keys can be omitted.
+
+#### Return value
+
+BCBP string. This is **not** encoded into a barcode.
+
+#### Example
+
+```js
+import { encode } from "bcbp";
+
+let output = encode({
+  legs: [
+    {
+      operatingCarrierPNR: "ABC123",
+      departureAirport: "YUL",
+      arrivalAirport: "FRA",
+      operatingCarrierDesignator: "AC",
+      flightNumber: "0834",
+      flightDate: "2020-08-13T00:00:00.000Z",
+      compartmentCode: "F",
+      seatNumber: "001A",
+      checkInSequenceNumber: "0025",
+      passengerStatus: "1",
+    },
+  ],
+  passengerName: "DESMARAIS/LUC",
+});
+
+console.log(output);
+// M1DESMARAIS/LUC       EABC123 YULFRAAC 0834 226F001A0025 100
+```
+
+### Decode
+
+#### Parameters
+
+- BCBP string
+  - The string to be decoded.
+
+#### Return value
+
+bcbpData Object.
+
+#### Example
 
 ```js
 import { decode } from "bcbp";
@@ -27,16 +81,11 @@ let output = decode(
   "M1DESMARAIS/LUC       EABC123 YULFRAAC 0834 226F001A0025 100"
 );
 
-console.log(output.passengerName); // DESMARAIS/LUC
+console.log(output.passengerName);
+// DESMARAIS/LUC
 ```
 
-## User guide
-
-### .encode(`object`)
-
-Converts an object to a BCBP string. Any of the following parameters can be skipped (except legs).
-
-#### Object
+## bcbpData Object
 
 | Name                         | Description                                          | Example values                                                                                                                                                                                                                |
 | ---------------------------- | ---------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
