@@ -11,7 +11,7 @@
     "release": "npm run build && npx semantic-release"
   },
   "author": {
-    "name": "George Smith"
+    "name": "George Smith <georges8899@gmail.com>"
   },
   "license": "MIT",
   "sideEffects": false,
