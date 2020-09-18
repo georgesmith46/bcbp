@@ -1,5 +1,4 @@
-import { encode } from "./";
-import { decode } from "./";
+import { encode, decode } from "./";
 
 describe("encode/decode", () => {
   describe("basic", () => {
