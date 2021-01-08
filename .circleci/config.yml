@@ -32,9 +32,12 @@ workflows:
   test-release:
     jobs:
       - test
-      - smokeTest
+      - smokeTest:
+          requires:
+            - test
       - release:
           requires:
+            - smokeTest
             - test
           filters:
             branches:
