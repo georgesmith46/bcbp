@@ -1,5 +1,7 @@
-import moment from "moment";
+import { DateTime, Settings } from "luxon";
 import fields from "./fields";
+
+Settings.defaultZoneName = "utc";
 
 const decimalToHex = (decimal) =>
   decimal.toString(16).padStart(2, "0").toUpperCase();
@@ -60,12 +62,12 @@ const getFieldValue = (fields, data, field) => {
     value.length !== field.length &&
     ["date", "dateWithYear"].includes(field.type)
   ) {
-    let date = moment.utc(value, moment.ISO_8601, true);
-    if (date.isValid()) {
+    let date = DateTime.fromISO(value);
+    if (date.isValid) {
       value =
         field.type === "dateWithYear"
-          ? date.format("YYDDDD").substr(1)
-          : date.format("DDDD");
+          ? date.toFormat("yyooo").substr(1)
+          : date.toFormat("ooo");
     } else {
       throw `${field.name} has the value "${value}" which is not a valid date`;
     }

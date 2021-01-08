@@ -1,5 +1,7 @@
-import moment from "moment";
+import { DateTime, Settings } from "luxon";
 import fields from "./fields";
+
+Settings.defaultZoneName = "utc";
 
 const hexToDecimal = (hex) => parseInt(hex, 16);
 
@@ -11,45 +13,41 @@ const getValue = (field, value) => {
 
   switch (field.type) {
     case "date":
-      estimatedDate = moment.utc(
-        moment.utc().format("YY") + value,
-        "YYDDDD",
-        true
+      estimatedDate = DateTime.fromFormat(
+        DateTime.utc().toFormat("yy") + value,
+        "yyooo"
       );
-      difference = moment.utc().diff(estimatedDate, "months");
+      difference = DateTime.utc().diff(estimatedDate, "months");
 
       // Estimate the year for this date.
       // If the estimated date is too far in the past, add a year.
       if (difference > 10) {
-        estimatedDate = moment.utc(
-          estimatedDate.add(1, "year").format("YY") + value,
-          "YYDDDD",
-          true
+        estimatedDate = DateTime.fromFormat(
+          estimatedDate.plus({ years: 1 }).toFormat("yy") + value,
+          "yyooo"
         );
       }
 
-      return estimatedDate.toISOString();
+      return estimatedDate.toISO();
     case "dateWithYear":
       let year = value.substr(0, 1),
         dayOfYear = value.substr(1),
-        currentYear = moment.utc().format("YY");
+        currentYear = DateTime.utc().toFormat("yy");
 
-      estimatedDate = moment.utc(
+      estimatedDate = DateTime.fromFormat(
         currentYear.substr(0, 1) + year + dayOfYear,
-        "YYDDDD",
-        true
+        "yyooo"
       );
-      difference = estimatedDate.diff(moment.utc(), "years");
+      difference = estimatedDate.diff(DateTime.utc(), "years");
 
       if (difference > 2) {
-        estimatedDate = moment.utc(
-          estimatedDate.subtract(10, "years").format("YY") + dayOfYear,
-          "YYDDDD",
-          true
+        estimatedDate = DateTime.fromFormat(
+          estimatedDate.minus({ years: 10 }).toFormat("yy") + dayOfYear,
+          "yyooo"
         );
       }
 
-      return estimatedDate.toISOString();
+      return estimatedDate.toISO();
     case "boolean":
       return value === "Y";
     default:
@@ -131,17 +129,19 @@ export default (barcodeString) => {
 
   // Special case for using the issuance year as the source of truth for other dates without a year
   if (output.issuanceDate) {
-    const issuanceYear = moment.utc(output.issuanceDate).format("YY");
+    const issuanceYear = DateTime.fromISO(output.issuanceDate).toFormat("yy");
     for (let leg of output.legs) {
-      const originalFlightDate = moment.utc(leg.flightDate).format("DDDD");
+      const originalFlightDate = DateTime.fromISO(leg.flightDate).toFormat(
+        "ooo"
+      );
 
-      const estimatedDate = moment.utc(
+      const estimatedDate = DateTime.fromFormat(
         originalFlightDate + issuanceYear,
-        "DDDDYY"
+        "oooyy"
       );
 
       if (estimatedDate > originalFlightDate)
-        leg.flightDate = estimatedDate.toISOString();
+        leg.flightDate = estimatedDate.toISO();
     }
   }
 
