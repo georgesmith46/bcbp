@@ -11,7 +11,7 @@ jobs:
           steps:
             - run: npm ci
             - run: npm test
-  release:
+  smokeTest:
     executor:
       name: node/default
     steps:
@@ -19,13 +19,25 @@ jobs:
       - node/with-cache:
           steps:
             - run: npm run build
+            - run: npm run test:smoke
+  release:
+    executor:
+      name: node/default
+    steps:
+      - checkout
+      - node/with-cache:
+          steps:
             - run: npm run release
 workflows:
   test-release:
     jobs:
       - test
+      - smokeTest:
+          requires:
+            - test
       - release:
           requires:
+            - smokeTest
             - test
           filters:
             branches:
