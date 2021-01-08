@@ -99,7 +99,7 @@ const bcbpObject = {
   // Source of Boarding Pass Issuance (string)
   boardingPassIssuanceSource: "W",
 
-  // Date of Issue of Boarding Pass (ISO date string, JavaScript Date, Moment.js object)
+  // Date of Issue of Boarding Pass (ISO date string)
   issuanceDate: "2016-08-12T00:00:00.000Z",
 
   // Document Type (string)
@@ -142,7 +142,7 @@ const bcbpObject = {
       // Flight Number (string)
       flightNumber: "0834",
 
-      // Date of Flight (ISO date string, JavaScript Date, Moment.js object)
+      // Date of Flight (ISO date string)
       flightDate: "2016-08-13T00:00:00.000Z",
 
       // Compartment Code (string)
