@@ -1,14 +1,12 @@
-import { DateTime, Settings } from "luxon";
+import { parse } from "date-fns";
 import decode from "./decode";
-
-Settings.defaultZoneName = "utc";
 
 describe("decode", () => {
   describe("basic", () => {
     const input =
       "M1DESMARAIS/LUC       EABC123 YULFRAAC 0834 226F001A0025 106>60000";
 
-    const expectedFlightDate = DateTime.fromFormat("226", "ooo").toISO();
+    const expectedFlightDate = parse("226Z", "DDDX", Date.now()).toISOString();
 
     it(`should have expected output`, () => {
       expect(decode(input)).toEqual({
@@ -133,7 +131,7 @@ describe("decode", () => {
     const input =
       "M2DESMARAIS/LUC       E                                   06>60000ABC123 YULFRAAC 0834 226F001A0025 10200";
 
-    const expectedFlightDate = DateTime.fromFormat("226", "ooo").toISO();
+    const expectedFlightDate = parse("226Z", "DDDX", Date.now()).toISOString();
 
     it("should have the expected output", () => {
       expect(decode(input)).toEqual({

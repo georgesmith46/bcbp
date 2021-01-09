@@ -1,7 +1,5 @@
-import { DateTime, Settings } from "luxon";
+import { parseISO, format, isValid } from "date-fns";
 import fields from "./fields";
-
-Settings.defaultZoneName = "utc";
 
 const decimalToHex = (decimal) =>
   decimal.toString(16).padStart(2, "0").toUpperCase();
@@ -62,14 +60,14 @@ const getFieldValue = (fields, data, field) => {
     value.length !== field.length &&
     ["date", "dateWithYear"].includes(field.type)
   ) {
-    let date = DateTime.fromISO(value);
-    if (date.isValid) {
+    let date = parseISO(value);
+    if (isValid(date)) {
       value =
         field.type === "dateWithYear"
-          ? date.toFormat("yyooo").substr(1)
-          : date.toFormat("ooo");
+          ? format(date, "yyDDD").substr(1)
+          : format(date, "DDD");
     } else {
-      throw `${field.name} has the value "${value}" which is not a valid date`;
+      throw `${field.name} has the value "${value}" which is not a valid ISO date`;
     }
   }
 

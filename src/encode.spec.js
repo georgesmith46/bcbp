@@ -1,7 +1,4 @@
-import { DateTime, Settings } from "luxon";
 import encode from "./encode";
-
-Settings.defaultZoneName = "utc";
 
 describe("encode", () => {
   describe("empty", () => {
@@ -33,7 +30,7 @@ describe("encode", () => {
             arrivalAirport: "FRA",
             operatingCarrierDesignator: "AC",
             flightNumber: "0834",
-            flightDate: "226",
+            flightDate: "2016-08-13T00:00:00.000Z",
             compartmentCode: "F",
             seatNumber: "001A",
             checkInSequenceNumber: "0025",
@@ -52,7 +49,7 @@ describe("encode", () => {
         passengerName: "DESMARAIS/LUC",
         passengerDescription: "1",
         checkInSource: "W",
-        issuanceDate: "2006-08-13",
+        issuanceDate: "2016-08-12T00:00:00.000Z",
         documentType: "B",
         boardingPassIssuerDesignator: "AC",
         legs: [
@@ -60,7 +57,7 @@ describe("encode", () => {
             operatingCarrierPNR: "ABC123",
             arrivalAirport: "FRA",
             operatingCarrierDesignator: "AC",
-            flightDate: "226",
+            flightDate: "2016-08-13T00:00:00.000Z",
             compartmentCode: "F",
             seatNumber: "001A",
             serialNumber: "1234567890",
@@ -81,7 +78,6 @@ describe("encode", () => {
     });
   });
   describe("full", () => {
-    const expectedFlightDate = DateTime.fromFormat("226", "ooo").toISO();
     const expected =
       "M2DESMARAIS/LUC       EABC123 YULFRAAC 0834 226F001A0025 14D>6181WW6225BAC 00141234560032A0141234567890 1AC AC 1234567890123    20KYLX58ZDEF456 FRAGVALH 3664 227C012C0002 12E2A0140987654321 1AC AC 1234567890123    2PCNWQ^164GIWVC5EH7JNT684FVNJ91W2QA4DVN5J8K4F0L0GEQ3DF5TGBN8709HKT5D3DW3GBHFCVHMY7J5T6HFR41W2QA4DVN5J8K4F0L0GE";
     const input = {
@@ -89,7 +85,7 @@ describe("encode", () => {
       passengerDescription: "1",
       checkInSource: "W",
       boardingPassIssuanceSource: "W",
-      issuanceDate: "6225",
+      issuanceDate: "2016-08-12T00:00:00.000Z",
       documentType: "B",
       boardingPassIssuerDesignator: "AC",
       baggageTagNumber: "0014123456003",
@@ -100,7 +96,7 @@ describe("encode", () => {
           arrivalAirport: "FRA",
           operatingCarrierDesignator: "AC",
           flightNumber: "0834",
-          flightDate: expectedFlightDate,
+          flightDate: "2016-08-13T00:00:00.000Z",
           compartmentCode: "F",
           seatNumber: "001A",
           checkInSequenceNumber: "0025",
@@ -121,7 +117,7 @@ describe("encode", () => {
           arrivalAirport: "GVA",
           operatingCarrierDesignator: "LH",
           flightNumber: "3664",
-          flightDate: "227",
+          flightDate: "2016-08-14T00:00:00.000Z",
           compartmentCode: "C",
           seatNumber: "012C",
           checkInSequenceNumber: "0002",
@@ -157,7 +153,7 @@ describe("encode", () => {
             arrivalAirport: "FRA",
             operatingCarrierDesignator: "AC",
             flightNumber: "0834",
-            flightDate: "226",
+            flightDate: "2016-08-13T00:00:00.000Z",
             compartmentCode: "F",
             seatNumber: "001A",
             checkInSequenceNumber: "0025",

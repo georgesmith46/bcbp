@@ -1,53 +1,59 @@
-import { DateTime, Settings } from "luxon";
+import {
+  format,
+  parse,
+  parseISO,
+  add,
+  sub,
+  differenceInMonths,
+  differenceInYears,
+} from "date-fns";
 import fields from "./fields";
-
-Settings.defaultZoneName = "utc";
 
 const hexToDecimal = (hex) => parseInt(hex, 16);
 
 // Parses the value into a human readable format
 const getValue = (field, value) => {
   if (value === "") return "";
+  const currentYear = format(Date.now(), "yy");
 
   let estimatedDate, difference;
 
   switch (field.type) {
     case "date":
-      estimatedDate = DateTime.fromFormat(
-        DateTime.utc().toFormat("yy") + value,
-        "yyooo"
-      );
-      difference = DateTime.utc().diff(estimatedDate, "months");
+      estimatedDate = parse(currentYear + value + "Z", "yyDDDX", Date.now());
+      difference = differenceInMonths(Date.now(), estimatedDate);
 
       // Estimate the year for this date.
       // If the estimated date is too far in the past, add a year.
       if (difference > 10) {
-        estimatedDate = DateTime.fromFormat(
-          estimatedDate.plus({ years: 1 }).toFormat("yy") + value,
-          "yyooo"
+        estimatedDate = parse(
+          format(add(estimatedDate, { years: 1 }), "yy") + value + "Z",
+          "yyDDDX",
+          Date.now()
         );
       }
 
-      return estimatedDate.toISO();
+      return estimatedDate.toISOString();
     case "dateWithYear":
-      let year = value.substr(0, 1),
-        dayOfYear = value.substr(1),
-        currentYear = DateTime.utc().toFormat("yy");
+      let year = value.substr(0, 1);
+      let dayOfYear = value.substr(1);
 
-      estimatedDate = DateTime.fromFormat(
-        currentYear.substr(0, 1) + year + dayOfYear,
-        "yyooo"
+      estimatedDate = parse(
+        currentYear.substr(0, 1) + year + dayOfYear + "Z",
+        "yyDDDX",
+        Date.now()
       );
-      difference = estimatedDate.diff(DateTime.utc(), "years");
+      difference = differenceInYears(estimatedDate, Date.now());
 
       if (difference > 2) {
-        estimatedDate = DateTime.fromFormat(
-          estimatedDate.minus({ years: 10 }).toFormat("yy") + dayOfYear,
-          "yyooo"
+        estimatedDate = parse(
+          format(sub(estimatedDate, { years: 10 }), "yy") + dayOfYear + "Z",
+          "yyDDDX",
+          Date.now()
         );
       }
 
-      return estimatedDate.toISO();
+      return estimatedDate.toISOString();
     case "boolean":
       return value === "Y";
     default:
@@ -129,19 +135,18 @@ export default (barcodeString) => {
 
   // Special case for using the issuance year as the source of truth for other dates without a year
   if (output.issuanceDate) {
-    const issuanceYear = DateTime.fromISO(output.issuanceDate).toFormat("yy");
+    const issuanceYear = format(parseISO(output.issuanceDate), "yy");
     for (let leg of output.legs) {
-      const originalFlightDate = DateTime.fromISO(leg.flightDate).toFormat(
-        "ooo"
-      );
+      const originalFlightDate = format(parseISO(leg.flightDate), "DDD");
 
-      const estimatedDate = DateTime.fromFormat(
-        originalFlightDate + issuanceYear,
-        "oooyy"
+      const estimatedDate = parse(
+        issuanceYear + originalFlightDate + "Z",
+        "yyDDDX",
+        Date.now()
       );
 
       if (estimatedDate > originalFlightDate)
-        leg.flightDate = estimatedDate.toISO();
+        leg.flightDate = estimatedDate.toISOString();
     }
   }
 
