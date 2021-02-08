@@ -10,6 +10,7 @@
 .idea/**/uiDesigner.xml
 .idea/**/gradle.xml
 .idea/**/libraries
+.idea/shelf
 cmake-build-debug/
 cmake-build-release/
 .idea/**/mongoSettings.xml
