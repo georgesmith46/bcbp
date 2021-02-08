@@ -12,43 +12,49 @@ import fields from "./fields";
 const hexToDecimal = (hex) => parseInt(hex, 16);
 
 // Parses the value into a human readable format
-const getValue = (field, value) => {
+const getValue = (field, value, referenceYear) => {
   if (value === "") return "";
-  const currentYear = format(Date.now(), "yy");
+  const year = referenceYear?.toString() || format(Date.now(), "y");
 
   let estimatedDate, difference;
 
   switch (field.type) {
     case "date":
-      estimatedDate = parse(currentYear + value + "Z", "yyDDDX", Date.now());
+      estimatedDate = parse(year + value + "Z", "yDDDX", Date.now());
       difference = differenceInMonths(Date.now(), estimatedDate);
 
-      // Estimate the year for this date.
-      // If the estimated date is too far in the past, add a year.
-      if (difference > 10) {
-        estimatedDate = parse(
-          format(add(estimatedDate, { years: 1 }), "yy") + value + "Z",
-          "yyDDDX",
-          Date.now()
-        );
+      if (!referenceYear) {
+        // Estimate the year for this date.
+        // If the estimated date is too far in the past, add a year.
+        if (difference > 10) {
+          estimatedDate = parse(
+            format(add(estimatedDate, { years: 1 }), "y") + value + "Z",
+            "yDDDX",
+            Date.now()
+          );
+        }
       }
 
       return estimatedDate.toISOString();
     case "dateWithYear":
-      let year = value.substr(0, 1);
+      let yearLastDigit = value.substr(0, 1);
       let dayOfYear = value.substr(1);
 
       estimatedDate = parse(
-        currentYear.substr(0, 1) + year + dayOfYear + "Z",
-        "yyDDDX",
+        year.slice(0, -1) + yearLastDigit + dayOfYear + "Z",
+        "yDDDX",
         Date.now()
       );
-      difference = differenceInYears(estimatedDate, Date.now());
+
+      difference = differenceInYears(
+        estimatedDate,
+        parse(year + "001Z", "yDDDX", Date.now())
+      );
 
       if (difference > 2) {
         estimatedDate = parse(
-          format(sub(estimatedDate, { years: 10 }), "yy") + dayOfYear + "Z",
-          "yyDDDX",
+          format(sub(estimatedDate, { years: 10 }), "y") + dayOfYear + "Z",
+          "yDDDX",
           Date.now()
         );
       }
@@ -63,13 +69,13 @@ const getValue = (field, value) => {
 
 // Adds the field value to the output and removes it from the barcode string
 // Recursive function which loops through the fields tree
-const parseField = (barcodeString, output, field, legIndex) => {
+const parseField = (barcodeString, output, field, referenceYear, legIndex) => {
   let fieldLength = field.length || barcodeString.length,
     value = barcodeString.substr(0, fieldLength).trim();
 
   if (value !== "" && !field.meta) {
     if (field.unique) {
-      output[field.name] = getValue(field, value);
+      output[field.name] = getValue(field, value, referenceYear);
     } else {
       let leg = output.legs[legIndex];
 
@@ -78,7 +84,7 @@ const parseField = (barcodeString, output, field, legIndex) => {
         output.legs.push(leg);
       }
 
-      leg[field.name] = getValue(field, value);
+      leg[field.name] = getValue(field, value, referenceYear);
     }
   }
 
@@ -98,6 +104,7 @@ const parseField = (barcodeString, output, field, legIndex) => {
         sectionString,
         output,
         subField,
+        referenceYear,
         legIndex
       );
       fieldLength += subFieldLength;
@@ -108,7 +115,7 @@ const parseField = (barcodeString, output, field, legIndex) => {
   return fieldLength;
 };
 
-export default (barcodeString) => {
+export default (barcodeString, referenceYear) => {
   let legs = +barcodeString.substr(1, 1);
 
   let output = { legs: [] };
@@ -120,7 +127,13 @@ export default (barcodeString) => {
     for (let field of fields.filter(
       (f) => !f.isSecurityField && (i === 0 || !f.unique)
     )) {
-      let fieldLength = parseField(barcodeString, output, field, i);
+      let fieldLength = parseField(
+        barcodeString,
+        output,
+        field,
+        referenceYear,
+        i
+      );
       barcodeString = barcodeString.substr(fieldLength);
     }
   }
@@ -128,13 +141,19 @@ export default (barcodeString) => {
   // Security data needs to be decoded last
   if (barcodeString.startsWith("^")) {
     for (let field of fields.filter((f) => f.isSecurityField)) {
-      let fieldLength = parseField(barcodeString, output, field, 0);
+      let fieldLength = parseField(
+        barcodeString,
+        output,
+        field,
+        referenceYear,
+        0
+      );
       barcodeString = barcodeString.substr(fieldLength);
     }
   }
 
   // Special case for using the issuance year as the source of truth for other dates without a year
-  if (output.issuanceDate) {
+  if (!referenceYear && output.issuanceDate) {
     const issuanceYear = format(parseISO(output.issuanceDate), "yy");
     for (let leg of output.legs) {
       const originalFlightDate = format(parseISO(leg.flightDate), "DDD");

@@ -154,4 +154,70 @@ describe("decode", () => {
       });
     });
   });
+  describe("reference year", () => {
+    const input =
+      "M1DESMARAIS/LUC       EABC123    FRAAC      226F001A      3B>60B1W 6225BAC 2A   1234567890 1AC AC 1234567890123    20KY^164GIWVC5EH7JNT684FVNJ91W2QA4DVN5J8K4F0L0GEQ3DF5TGBN8709HKT5D3DW3GBHFCVHMY7J5T6HFR41W2QA4DVN5J8K4F0L0GE";
+
+    it("should have the expected output when reference year is 2010", () => {
+      expect(decode(input, 2010)).toEqual({
+        legs: [
+          {
+            operatingCarrierPNR: "ABC123",
+            arrivalAirport: "FRA",
+            operatingCarrierDesignator: "AC",
+            flightDate: "2010-08-14T00:00:00.000Z",
+            compartmentCode: "F",
+            seatNumber: "001A",
+            serialNumber: "1234567890",
+            internationalDocumentationVerification: "1",
+            marketingCarrierDesignator: "AC",
+            frequentFlyerAirlineDesignator: "AC",
+            frequentFlyerNumber: "1234567890123",
+            freeBaggageAllowance: "20K",
+            fastTrack: true,
+          },
+        ],
+        passengerName: "DESMARAIS/LUC",
+        passengerDescription: "1",
+        checkInSource: "W",
+        issuanceDate: "2006-08-13T00:00:00.000Z",
+        documentType: "B",
+        boardingPassIssuerDesignator: "AC",
+        securityDataType: "1",
+        securityData:
+          "GIWVC5EH7JNT684FVNJ91W2QA4DVN5J8K4F0L0GEQ3DF5TGBN8709HKT5D3DW3GBHFCVHMY7J5T6HFR41W2QA4DVN5J8K4F0L0GE",
+      });
+    });
+
+    it("should have the expected output when reference year is 2006", () => {
+      expect(decode(input, 2006)).toEqual({
+        legs: [
+          {
+            operatingCarrierPNR: "ABC123",
+            arrivalAirport: "FRA",
+            operatingCarrierDesignator: "AC",
+            flightDate: "2006-08-14T00:00:00.000Z",
+            compartmentCode: "F",
+            seatNumber: "001A",
+            serialNumber: "1234567890",
+            internationalDocumentationVerification: "1",
+            marketingCarrierDesignator: "AC",
+            frequentFlyerAirlineDesignator: "AC",
+            frequentFlyerNumber: "1234567890123",
+            freeBaggageAllowance: "20K",
+            fastTrack: true,
+          },
+        ],
+        passengerName: "DESMARAIS/LUC",
+        passengerDescription: "1",
+        checkInSource: "W",
+        issuanceDate: "2006-08-13T00:00:00.000Z",
+        documentType: "B",
+        boardingPassIssuerDesignator: "AC",
+        securityDataType: "1",
+        securityData:
+          "GIWVC5EH7JNT684FVNJ91W2QA4DVN5J8K4F0L0GEQ3DF5TGBN8709HKT5D3DW3GBHFCVHMY7J5T6HFR41W2QA4DVN5J8K4F0L0GE",
+      });
+    });
+  });
 });
