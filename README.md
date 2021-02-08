@@ -63,6 +63,7 @@ console.log(output);
 ### Parameters
 
 - [BCBP string](#bcbp-string) - The string to be decoded.
+- [Reference Year](#reference-year) - Define a reference year for dates
 
 ### Return value
 
@@ -201,6 +202,22 @@ A string which follows the IATA BCBP version 6 standard.
 ```js
 const bcbpString =
   "M1DESMARAIS/LUC       EABC123 YULFRAAC 0834 226F001A0025 100";
+```
+
+# Reference Year
+
+Define the year which is used when parsing date fields. If this is undefined, the current year is used.
+
+```js
+import { decode } from "bcbp";
+
+let output = decode(
+  "M1DESMARAIS/LUC       EABC123 YULFRAAC 0834 226F001A0025 100",
+  2010
+);
+
+console.log(output.legs[0].flightDate);
+// 2010-08-14T00:00:00.000Z
 ```
 
 ## License
