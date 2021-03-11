@@ -1,7 +1,7 @@
 {
 	"name": "bcbp",
 	"version": "0.0.0-semantically-released",
-	"description": "Encoding/decoding library for the IATA Bar Coded Boarding Pass",
+	"description": "Encoding/decoding library for the IATA Bar Coded Boarding Pas",
 	"main": "./dist/index.umd.js",
 	"module": "./dist/index.esm.js",
 	"repository": "github:georgesmith46/bcbp",
