@@ -43,6 +43,7 @@ workflows:
       - smokeTest:
           requires:
             - test
+      - releaseDryRun
       - release:
           requires:
             - smokeTest
