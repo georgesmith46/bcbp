@@ -9,7 +9,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - run: git switch -c "pull-request-dry-run"
+      - run: git switch -
       - name: Setup Node.js
         uses: actions/setup-node@v1
         with:
