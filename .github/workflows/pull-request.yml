@@ -21,7 +21,7 @@ jobs:
         run: npm run build
       - name: Smoke test
         run: npm run test:smoke
-      - run: git checkout ${{github.head_ref}}
+      - run: git checkout ${{github.ref}}
       - name: Release dry run
         if: ${{ github.base_ref == 'master' }}
         env:
