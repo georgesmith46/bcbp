@@ -1,7 +1,6 @@
 import {
   format,
   parse,
-  parseISO,
   add,
   sub,
   differenceInMonths,
@@ -35,7 +34,7 @@ const getValue = (field, value, referenceYear) => {
         }
       }
 
-      return estimatedDate.toISOString();
+      return estimatedDate;
     case "dateWithYear":
       let yearLastDigit = value.substr(0, 1);
       let dayOfYear = value.substr(1);
@@ -59,7 +58,7 @@ const getValue = (field, value, referenceYear) => {
         );
       }
 
-      return estimatedDate.toISOString();
+      return estimatedDate;
     case "boolean":
       return value === "Y";
     default:
@@ -154,9 +153,9 @@ export default (barcodeString, referenceYear) => {
 
   // Special case for using the issuance year as the source of truth for other dates without a year
   if (!referenceYear && output.issuanceDate) {
-    const issuanceYear = format(parseISO(output.issuanceDate), "yy");
+    const issuanceYear = format(output.issuanceDate, "yy");
     for (let leg of output.legs) {
-      const originalFlightDate = format(parseISO(leg.flightDate), "DDD");
+      const originalFlightDate = format(leg.flightDate, "DDD");
 
       const estimatedDate = parse(
         issuanceYear + originalFlightDate + "Z",
@@ -164,8 +163,7 @@ export default (barcodeString, referenceYear) => {
         Date.now()
       );
 
-      if (estimatedDate > originalFlightDate)
-        leg.flightDate = estimatedDate.toISOString();
+      if (estimatedDate > originalFlightDate) leg.flightDate = estimatedDate;
     }
   }
 

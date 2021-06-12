@@ -1,10 +1,10 @@
-import babel from "@rollup/plugin-babel";
+import ts from "rollup-plugin-ts";
 import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
 import pkg from "./package.json";
 
 export default {
-  input: "./src/index.js",
+  input: "./src/index.ts",
   output: [
     {
       file: pkg.main,
@@ -16,9 +16,5 @@ export default {
       format: "es",
     },
   ],
-  plugins: [
-    babel({ exclude: "node_modules/**", babelHelpers: "runtime" }),
-    resolve(),
-    commonjs(),
-  ],
+  plugins: [ts({ transpiler: "babel" }), resolve(), commonjs()],
 };
