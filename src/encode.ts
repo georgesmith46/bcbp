@@ -78,7 +78,7 @@ class SectionBuilder {
   }
 }
 
-export default (data: BoardingPassData) => {
+export const encode = (data: BoardingPassData) => {
   const meta: BoardingPassMetaData = {
     formatCode: "M",
     numberOfLegs: data.legs?.length ?? 0,

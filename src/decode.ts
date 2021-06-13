@@ -64,7 +64,7 @@ class SectionDecoder {
   }
 }
 
-export default (barcodeString: string, referenceYear: number) => {
+export const decode = (barcodeString: string, referenceYear?: number) => {
   const bcbp: BarcodedBoardingPass = {};
   const mainSection = new SectionDecoder(barcodeString);
 
