@@ -38,12 +38,16 @@ export interface BoardingPassData {
   securityData?: string;
 }
 
-export interface BoardingPassBarcodeData {
-  data: BoardingPassData;
-  formatCode: string;
-  numberOfLegs: number;
-  electronicTicketIndicator: string;
-  versionNumberIndicator: string;
-  versionNumber: number;
-  securityDataIndicator: string;
+export interface BoardingPassMetaData {
+  formatCode?: string;
+  numberOfLegs?: number;
+  electronicTicketIndicator?: string;
+  versionNumberIndicator?: string;
+  versionNumber?: number;
+  securityDataIndicator?: string;
+}
+
+export interface BarcodedBoardingPass {
+  data?: BoardingPassData;
+  meta?: BoardingPassMetaData;
 }

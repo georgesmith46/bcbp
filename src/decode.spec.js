@@ -1,5 +1,5 @@
 import { parse } from "date-fns";
-import decode from "./decode";
+import decode from "./decode.ts";
 
 describe("decode", () => {
   describe("basic", () => {

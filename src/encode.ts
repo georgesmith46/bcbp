@@ -1,22 +1,10 @@
-import { BoardingPassBarcodeData, BoardingPassData } from "./types";
-
-const numberToHex = (n: number) =>
-  n.toString(16).padStart(2, "0").toUpperCase();
-
-const parseDate = (date: Date, addYearPrefix = false) => {
-  const start = new Date(date.getFullYear(), 0, 0);
-  const diff =
-    date.getTime() -
-    start.getTime() +
-    (start.getTimezoneOffset() - date.getTimezoneOffset()) * 60 * 1000;
-  const oneDay = 1000 * 60 * 60 * 24;
-  const dayOfYear = Math.floor(diff / oneDay);
-  let yearPrefix = "";
-  if (addYearPrefix) {
-    yearPrefix = date.getFullYear().toString().slice(-1);
-  }
-  return `${yearPrefix}${dayOfYear.toString()}`;
-};
+import {
+  BarcodedBoardingPass,
+  BoardingPassData,
+  BoardingPassMetaData,
+} from "./types";
+import { dateToDayOfYear, numberToHex } from "./utils";
+import * as LENGTHS from "./field-lengths";
 
 interface FieldSize {
   size: number;
@@ -39,7 +27,7 @@ class SectionBuilder {
     } else if (typeof field === "number") {
       value = field.toString();
     } else if (field instanceof Date) {
-      value = parseDate(field, addYearPrefix);
+      value = dateToDayOfYear(field, addYearPrefix);
     } else if (typeof field === "boolean") {
       value = field ? "Y" : "N";
     } else {
@@ -90,101 +78,135 @@ class SectionBuilder {
   }
 }
 
-class BoardingPassDataEncoder implements BoardingPassBarcodeData {
-  data: BoardingPassData;
-  formatCode: string;
-  numberOfLegs: number;
-  electronicTicketIndicator: string;
-  versionNumberIndicator: string;
-  versionNumber: number;
-  securityDataIndicator: string;
-
-  constructor(data: BoardingPassData) {
-    this.data = data;
-    this.formatCode = "M";
-    this.numberOfLegs = data.legs?.length ?? 0;
-    this.electronicTicketIndicator = "E";
-    this.versionNumberIndicator = ">";
-    this.versionNumber = 6;
-    this.securityDataIndicator = "^";
-  }
-
-  encode() {
-    const barcodeData = new SectionBuilder();
-    if (this.data.legs === undefined || this.data.legs.length === 0) {
-      return "";
-    }
-
-    barcodeData.addField(this.formatCode, 1);
-    barcodeData.addField(this.numberOfLegs, 1);
-    barcodeData.addField(this.data.passengerName, 20);
-    barcodeData.addField(this.electronicTicketIndicator, 1);
-
-    let addedUniqueFields = false;
-
-    for (let leg of this.data.legs) {
-      barcodeData.addField(leg.operatingCarrierPNR, 7);
-      barcodeData.addField(leg.departureAirport, 3);
-      barcodeData.addField(leg.arrivalAirport, 3);
-      barcodeData.addField(leg.operatingCarrierDesignator, 3);
-      barcodeData.addField(leg.flightNumber, 5);
-      barcodeData.addField(leg.flightDate, 3);
-      barcodeData.addField(leg.compartmentCode, 1);
-      barcodeData.addField(leg.seatNumber, 4);
-      barcodeData.addField(leg.checkInSequenceNumber, 5);
-      barcodeData.addField(leg.passengerStatus, 1);
-
-      const conditionalSection = new SectionBuilder();
-
-      if (!addedUniqueFields) {
-        conditionalSection.addField(this.versionNumberIndicator, 1);
-        conditionalSection.addField(this.versionNumber, 1);
-
-        const sectionA = new SectionBuilder();
-        sectionA.addField(this.data.passengerDescription, 1);
-        sectionA.addField(this.data.checkInSource, 1);
-        sectionA.addField(this.data.boardingPassIssuanceSource, 1);
-        sectionA.addField(this.data.issuanceDate, 4, true);
-        sectionA.addField(this.data.documentType, 1);
-        sectionA.addField(this.data.boardingPassIssuerDesignator, 3);
-        sectionA.addField(this.data.baggageTagNumber, 13);
-        sectionA.addField(this.data.firstBaggageTagNumber, 13);
-        sectionA.addField(this.data.secondBaggageTagNumber, 13);
-
-        conditionalSection.addSection(sectionA);
-        addedUniqueFields = true;
-      }
-
-      const sectionB = new SectionBuilder();
-      sectionB.addField(leg.airlineNumericCode, 3);
-      sectionB.addField(leg.serialNumber, 10);
-      sectionB.addField(leg.selecteeIndicator, 1);
-      sectionB.addField(leg.internationalDocumentationVerification, 1);
-      sectionB.addField(leg.marketingCarrierDesignator, 3);
-      sectionB.addField(leg.frequentFlyerAirlineDesignator, 3);
-      sectionB.addField(leg.frequentFlyerNumber, 16);
-      sectionB.addField(leg.idIndicator, 1);
-      sectionB.addField(leg.freeBaggageAllowance, 3);
-      sectionB.addField(leg.fastTrack, 1);
-      conditionalSection.addSection(sectionB);
-      conditionalSection.addField(leg.airlineInfo);
-      barcodeData.addSection(conditionalSection);
-    }
-
-    if (this.data.securityData !== undefined) {
-      barcodeData.addField(this.securityDataIndicator, 1);
-      barcodeData.addField(this.data.securityDataType ?? "1", 1);
-      const securitySection = new SectionBuilder();
-      securitySection.addField(this.data.securityData, 100);
-      barcodeData.addSection(securitySection);
-    }
-
-    return barcodeData.toString();
-  }
-}
-
 export default (data: BoardingPassData) => {
-  const barcodeData = new BoardingPassDataEncoder(data);
+  const meta: BoardingPassMetaData = {
+    formatCode: "M",
+    numberOfLegs: data.legs?.length ?? 0,
+    electronicTicketIndicator: "E",
+    versionNumberIndicator: ">",
+    versionNumber: 6,
+    securityDataIndicator: "^",
+  };
+  const bcbp: BarcodedBoardingPass = {};
+  bcbp.data = data;
+  bcbp.meta = meta;
 
-  return barcodeData.encode();
+  const barcodeData = new SectionBuilder();
+  if (bcbp.data?.legs === undefined || bcbp.data.legs.length === 0) {
+    return "";
+  }
+
+  barcodeData.addField(bcbp.meta.formatCode, LENGTHS.FORMAT_CODE);
+  barcodeData.addField(bcbp.meta.numberOfLegs, LENGTHS.NUMBER_OF_LEGS);
+  barcodeData.addField(bcbp.data.passengerName, LENGTHS.PASSENGER_NAME);
+  barcodeData.addField(
+    bcbp.meta.electronicTicketIndicator,
+    LENGTHS.ELECTRONIC_TICKET_INDICATOR
+  );
+
+  let addedUniqueFields = false;
+
+  for (let leg of bcbp.data.legs) {
+    barcodeData.addField(
+      leg.operatingCarrierPNR,
+      LENGTHS.OPERATING_CARRIER_PNR
+    );
+    barcodeData.addField(leg.departureAirport, LENGTHS.DEPARTURE_AIRPORT);
+    barcodeData.addField(leg.arrivalAirport, LENGTHS.ARRIVAL_AIRPORT);
+    barcodeData.addField(
+      leg.operatingCarrierDesignator,
+      LENGTHS.OPERATING_CARRIER_DESIGNATOR
+    );
+    barcodeData.addField(leg.flightNumber, LENGTHS.FLIGHT_NUMBER);
+    barcodeData.addField(leg.flightDate, LENGTHS.FLIGHT_DATE);
+    barcodeData.addField(leg.compartmentCode, LENGTHS.COMPARTMENT_CODE);
+    barcodeData.addField(leg.seatNumber, LENGTHS.SEAT_NUMBER);
+    barcodeData.addField(
+      leg.checkInSequenceNumber,
+      LENGTHS.CHECK_IN_SEQUENCE_NUMBER
+    );
+    barcodeData.addField(leg.passengerStatus, LENGTHS.PASSENGER_STATUS);
+
+    const conditionalSection = new SectionBuilder();
+
+    if (!addedUniqueFields) {
+      conditionalSection.addField(
+        bcbp.meta.versionNumberIndicator,
+        LENGTHS.VERSION_NUMBER_INDICATOR
+      );
+      conditionalSection.addField(
+        bcbp.meta.versionNumber,
+        LENGTHS.VERSION_NUMBER
+      );
+
+      const sectionA = new SectionBuilder();
+      sectionA.addField(
+        bcbp.data.passengerDescription,
+        LENGTHS.PASSENGER_DESCRIPTION
+      );
+      sectionA.addField(bcbp.data.checkInSource, LENGTHS.CHECK_IN_SOURCE);
+      sectionA.addField(
+        bcbp.data.boardingPassIssuanceSource,
+        LENGTHS.BOARDING_PASS_ISSUANCE_SOURCE
+      );
+      sectionA.addField(bcbp.data.issuanceDate, LENGTHS.ISSUANCE_DATE, true);
+      sectionA.addField(bcbp.data.documentType, LENGTHS.DOCUMENT_TYPE);
+      sectionA.addField(
+        bcbp.data.boardingPassIssuerDesignator,
+        LENGTHS.BOARDING_PASS_ISSUER_DESIGNATOR
+      );
+      sectionA.addField(bcbp.data.baggageTagNumber, LENGTHS.BAGGAGE_TAG_NUMBER);
+      sectionA.addField(
+        bcbp.data.firstBaggageTagNumber,
+        LENGTHS.FIRST_BAGGAGE_TAG_NUMBER
+      );
+      sectionA.addField(
+        bcbp.data.secondBaggageTagNumber,
+        LENGTHS.SECOND_BAGGAGE_TAG_NUMBER
+      );
+
+      conditionalSection.addSection(sectionA);
+      addedUniqueFields = true;
+    }
+
+    const sectionB = new SectionBuilder();
+    sectionB.addField(leg.airlineNumericCode, LENGTHS.AIRLINE_NUMERIC_CODE);
+    sectionB.addField(leg.serialNumber, LENGTHS.SERIAL_NUMBER);
+    sectionB.addField(leg.selecteeIndicator, LENGTHS.SELECTEE_INDICATOR);
+    sectionB.addField(
+      leg.internationalDocumentationVerification,
+      LENGTHS.INTERNATIONAL_DOCUMENTATION_VERIFICATION
+    );
+    sectionB.addField(
+      leg.marketingCarrierDesignator,
+      LENGTHS.MARKETING_CARRIER_DESIGNATOR
+    );
+    sectionB.addField(
+      leg.frequentFlyerAirlineDesignator,
+      LENGTHS.FREQUENT_FLYER_AIRLINE_DESIGNATOR
+    );
+    sectionB.addField(leg.frequentFlyerNumber, LENGTHS.FREQUENT_FLYER_NUMBER);
+    sectionB.addField(leg.idIndicator, LENGTHS.ID_INDICATOR);
+    sectionB.addField(leg.freeBaggageAllowance, LENGTHS.FREE_BAGGAGE_ALLOWANCE);
+    sectionB.addField(leg.fastTrack, LENGTHS.FAST_TRACK);
+    conditionalSection.addSection(sectionB);
+    conditionalSection.addField(leg.airlineInfo);
+    barcodeData.addSection(conditionalSection);
+  }
+
+  if (bcbp.data.securityData !== undefined) {
+    barcodeData.addField(
+      bcbp.meta.securityDataIndicator,
+      LENGTHS.SECURITY_DATA_INDICATOR
+    );
+    barcodeData.addField(
+      bcbp.data.securityDataType ?? "1",
+      LENGTHS.SECURITY_DATA_TYPE
+    );
+    const securitySection = new SectionBuilder();
+    securitySection.addField(bcbp.data.securityData, LENGTHS.SECURITY_DATA);
+    barcodeData.addSection(securitySection);
+  }
+
+  return barcodeData.toString();
 };
