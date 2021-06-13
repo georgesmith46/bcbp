@@ -1,4 +1,4 @@
-import encode from "./encode.ts";
+import { encode } from "./encode.ts";
 
 describe("encode", () => {
   describe("empty", () => {
