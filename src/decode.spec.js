@@ -1,12 +1,12 @@
 import { parse } from "date-fns";
-import decode from "./decode";
+import decode from "./decode.ts";
 
 describe("decode", () => {
   describe("basic", () => {
     const input =
       "M1DESMARAIS/LUC       EABC123 YULFRAAC 0834 226F001A0025 106>60000";
 
-    const expectedFlightDate = parse("226Z", "DDDX", Date.now()).toISOString();
+    const expectedFlightDate = parse("226Z", "DDDX", Date.now());
 
     it(`should have expected output`, () => {
       expect(decode(input)).toEqual({
@@ -39,7 +39,7 @@ describe("decode", () => {
             operatingCarrierPNR: "ABC123",
             arrivalAirport: "FRA",
             operatingCarrierDesignator: "AC",
-            flightDate: "2016-08-13T00:00:00.000Z",
+            flightDate: new Date("2016-08-13T00:00:00.000Z"),
             compartmentCode: "F",
             seatNumber: "001A",
             serialNumber: "1234567890",
@@ -54,7 +54,7 @@ describe("decode", () => {
         passengerName: "DESMARAIS/LUC",
         passengerDescription: "1",
         checkInSource: "W",
-        issuanceDate: "2016-08-12T00:00:00.000Z",
+        issuanceDate: new Date("2016-08-12T00:00:00.000Z"),
         documentType: "B",
         boardingPassIssuerDesignator: "AC",
         securityDataType: "1",
@@ -76,7 +76,7 @@ describe("decode", () => {
             arrivalAirport: "FRA",
             operatingCarrierDesignator: "AC",
             flightNumber: "0834",
-            flightDate: "2016-08-13T00:00:00.000Z",
+            flightDate: new Date("2016-08-13T00:00:00.000Z"),
             compartmentCode: "F",
             seatNumber: "001A",
             checkInSequenceNumber: "0025",
@@ -97,7 +97,7 @@ describe("decode", () => {
             arrivalAirport: "GVA",
             operatingCarrierDesignator: "LH",
             flightNumber: "3664",
-            flightDate: "2016-08-14T00:00:00.000Z",
+            flightDate: new Date("2016-08-14T00:00:00.000Z"),
             compartmentCode: "C",
             seatNumber: "012C",
             checkInSequenceNumber: "0002",
@@ -117,7 +117,7 @@ describe("decode", () => {
         passengerDescription: "1",
         checkInSource: "W",
         boardingPassIssuanceSource: "W",
-        issuanceDate: "2016-08-12T00:00:00.000Z",
+        issuanceDate: new Date("2016-08-12T00:00:00.000Z"),
         documentType: "B",
         boardingPassIssuerDesignator: "AC",
         baggageTagNumber: "0014123456003",
@@ -131,7 +131,7 @@ describe("decode", () => {
     const input =
       "M2DESMARAIS/LUC       E                                   06>60000ABC123 YULFRAAC 0834 226F001A0025 10200";
 
-    const expectedFlightDate = parse("226Z", "DDDX", Date.now()).toISOString();
+    const expectedFlightDate = parse("226Z", "DDDX", Date.now());
 
     it("should have the expected output", () => {
       expect(decode(input)).toEqual({
@@ -165,7 +165,7 @@ describe("decode", () => {
             operatingCarrierPNR: "ABC123",
             arrivalAirport: "FRA",
             operatingCarrierDesignator: "AC",
-            flightDate: "2010-08-14T00:00:00.000Z",
+            flightDate: new Date("2010-08-14T00:00:00.000Z"),
             compartmentCode: "F",
             seatNumber: "001A",
             serialNumber: "1234567890",
@@ -180,7 +180,7 @@ describe("decode", () => {
         passengerName: "DESMARAIS/LUC",
         passengerDescription: "1",
         checkInSource: "W",
-        issuanceDate: "2006-08-13T00:00:00.000Z",
+        issuanceDate: new Date("2006-08-13T00:00:00.000Z"),
         documentType: "B",
         boardingPassIssuerDesignator: "AC",
         securityDataType: "1",
@@ -196,7 +196,7 @@ describe("decode", () => {
             operatingCarrierPNR: "ABC123",
             arrivalAirport: "FRA",
             operatingCarrierDesignator: "AC",
-            flightDate: "2006-08-14T00:00:00.000Z",
+            flightDate: new Date("2006-08-14T00:00:00.000Z"),
             compartmentCode: "F",
             seatNumber: "001A",
             serialNumber: "1234567890",
@@ -211,7 +211,7 @@ describe("decode", () => {
         passengerName: "DESMARAIS/LUC",
         passengerDescription: "1",
         checkInSource: "W",
-        issuanceDate: "2006-08-13T00:00:00.000Z",
+        issuanceDate: new Date("2006-08-13T00:00:00.000Z"),
         documentType: "B",
         boardingPassIssuerDesignator: "AC",
         securityDataType: "1",

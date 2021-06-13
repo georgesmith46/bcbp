@@ -1,4 +1,3 @@
-[![CircleCI](https://circleci.com/gh/georgesmith46/bcbp.svg?style=shield)](https://app.circleci.com/pipelines/github/georgesmith46/bcbp)
 [![License](https://badgen.net/npm/license/bcbp)](LICENSE)
 [![Bundlephobia](https://badgen.net/bundlephobia/minzip/bcbp)](https://bundlephobia.com/result?p=bcbp)
 [![Version](https://badgen.net/npm/v/bcbp)](https://npm.im/bcbp)
@@ -44,7 +43,7 @@ let output = encode({
       arrivalAirport: "FRA",
       operatingCarrierDesignator: "AC",
       flightNumber: "0834",
-      flightDate: "2020-08-13T00:00:00.000Z",
+      flightDate: new Date("2020-08-13T00:00:00.000Z"),
       compartmentCode: "F",
       seatNumber: "001A",
       checkInSequenceNumber: "0025",
@@ -100,8 +99,8 @@ const bcbpObject = {
   // Source of Boarding Pass Issuance (string)
   boardingPassIssuanceSource: "W",
 
-  // Date of Issue of Boarding Pass (ISO date string)
-  issuanceDate: "2016-08-12T00:00:00.000Z",
+  // Date of Issue of Boarding Pass (Date)
+  issuanceDate: new Date("2016-08-12T00:00:00.000Z"),
 
   // Document Type (string)
   documentType: "B",
@@ -143,8 +142,8 @@ const bcbpObject = {
       // Flight Number (string)
       flightNumber: "0834",
 
-      // Date of Flight (ISO date string)
-      flightDate: "2016-08-13T00:00:00.000Z",
+      // Date of Flight (Date)
+      flightDate: new Date("2016-08-13T00:00:00.000Z"),
 
       // Compartment Code (string)
       compartmentCode: "F",
@@ -216,8 +215,8 @@ let output = decode(
   2010
 );
 
-console.log(output.legs[0].flightDate);
-// 2010-08-14T00:00:00.000Z
+console.log(output.legs[0].flightDate.toISOString());
+// "2010-08-14T00:00:00.000Z"
 ```
 
 ## License

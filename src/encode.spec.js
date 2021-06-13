@@ -1,4 +1,4 @@
-import encode from "./encode";
+import encode from "./encode.ts";
 
 describe("encode", () => {
   describe("empty", () => {
@@ -30,7 +30,7 @@ describe("encode", () => {
             arrivalAirport: "FRA",
             operatingCarrierDesignator: "AC",
             flightNumber: "0834",
-            flightDate: "2016-08-13T00:00:00.000Z",
+            flightDate: new Date("2016-08-13T00:00:00.000Z"),
             compartmentCode: "F",
             seatNumber: "001A",
             checkInSequenceNumber: "0025",
@@ -49,7 +49,7 @@ describe("encode", () => {
         passengerName: "DESMARAIS/LUC",
         passengerDescription: "1",
         checkInSource: "W",
-        issuanceDate: "2016-08-12T00:00:00.000Z",
+        issuanceDate: new Date("2016-08-12T00:00:00.000Z"),
         documentType: "B",
         boardingPassIssuerDesignator: "AC",
         legs: [
@@ -57,7 +57,7 @@ describe("encode", () => {
             operatingCarrierPNR: "ABC123",
             arrivalAirport: "FRA",
             operatingCarrierDesignator: "AC",
-            flightDate: "2016-08-13T00:00:00.000Z",
+            flightDate: new Date("2016-08-13T00:00:00.000Z"),
             compartmentCode: "F",
             seatNumber: "001A",
             serialNumber: "1234567890",
@@ -85,7 +85,7 @@ describe("encode", () => {
       passengerDescription: "1",
       checkInSource: "W",
       boardingPassIssuanceSource: "W",
-      issuanceDate: "2016-08-12T00:00:00.000Z",
+      issuanceDate: new Date("2016-08-12T00:00:00.000Z"),
       documentType: "B",
       boardingPassIssuerDesignator: "AC",
       baggageTagNumber: "0014123456003",
@@ -96,7 +96,7 @@ describe("encode", () => {
           arrivalAirport: "FRA",
           operatingCarrierDesignator: "AC",
           flightNumber: "0834",
-          flightDate: "2016-08-13T00:00:00.000Z",
+          flightDate: new Date("2016-08-13T00:00:00.000Z"),
           compartmentCode: "F",
           seatNumber: "001A",
           checkInSequenceNumber: "0025",
@@ -117,7 +117,7 @@ describe("encode", () => {
           arrivalAirport: "GVA",
           operatingCarrierDesignator: "LH",
           flightNumber: "3664",
-          flightDate: "2016-08-14T00:00:00.000Z",
+          flightDate: new Date("2016-08-14T00:00:00.000Z"),
           compartmentCode: "C",
           seatNumber: "012C",
           checkInSequenceNumber: "0002",
@@ -153,7 +153,7 @@ describe("encode", () => {
             arrivalAirport: "FRA",
             operatingCarrierDesignator: "AC",
             flightNumber: "0834",
-            flightDate: "2016-08-13T00:00:00.000Z",
+            flightDate: new Date("2016-08-13T00:00:00.000Z"),
             compartmentCode: "F",
             seatNumber: "001A",
             checkInSequenceNumber: "0025",
