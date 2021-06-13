@@ -9,7 +9,7 @@
 		"build": "rollup -c",
 		"test": "jest --testPathIgnorePatterns=\"/node_modules/\", \"/test/\"",
 		"test:smoke": "jest test/smoke.test.js",
-		"release": "npm run build && npx semantic-release",
+		"release": "npx semantic-release",
 		"release-dry-run": "npx semantic-release-github-pr --debug"
 	},
 	"author": {
