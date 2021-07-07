@@ -50,3 +50,4 @@ typings/
 .env
 .next
 dist/
+.vscode

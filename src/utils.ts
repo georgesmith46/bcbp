@@ -23,7 +23,7 @@ export const dayOfYearToDate = (
   hasYearPrefix: boolean,
   referenceYear?: number
 ) => {
-  const currentYear = referenceYear ?? new Date(Date.now()).getFullYear();
+  const currentYear = referenceYear ?? new Date(Date.now()).getUTCFullYear();
   let year = currentYear.toString();
   let daysToAdd = dayOfYear;
 
@@ -36,6 +36,6 @@ export const dayOfYearToDate = (
     }
   }
 
-  const date = new Date(parseInt(year), 0);
+  const date = new Date(Date.UTC(parseInt(year), 0));
   return new Date(date.setUTCDate(parseInt(daysToAdd)));
 };
