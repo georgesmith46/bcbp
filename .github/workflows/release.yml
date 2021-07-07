@@ -20,6 +20,8 @@ jobs:
         run: npm ci
       - name: Unit test
         run: npm test
+      - name: Timezone unit test
+        run: npm run test:timezone
       - name: Build
         run: npm run build
       - name: Smoke test
