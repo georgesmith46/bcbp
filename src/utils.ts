@@ -4,7 +4,7 @@ export const numberToHex = (n: number) =>
   n.toString(16).padStart(2, "0").toUpperCase();
 
 export const dateToDayOfYear = (date: Date, addYearPrefix = false) => {
-  const start = new Date(date.getFullYear(), 0, 0);
+  const start = new Date(Date.UTC(date.getFullYear(), 0, 0));
   const diff =
     date.getTime() -
     start.getTime() +
