@@ -28,7 +28,7 @@
     "@rollup/plugin-commonjs": "^21.0.0",
     "@rollup/plugin-node-resolve": "^13.0.0",
     "babel-jest": "^27.0.2",
-    "cz-conventional-changelog": "^3.3.0",
+    "cz-conventional-changelog": "^3.0.1",
     "date-fns": "^2.22.1",
     "jest": "^27.0.4",
     "prettier": "^2.3.1",
