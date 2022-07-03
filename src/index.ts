@@ -1,3 +1,3 @@
 export * from "./encode";
 export * from "./decode";
-export { BoardingPassData, Leg } from "./types";
+export type { BoardingPassData, Leg } from "./types";
