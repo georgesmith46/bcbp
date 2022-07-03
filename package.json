@@ -28,7 +28,6 @@
     "@rollup/plugin-commonjs": "^22.0.0",
     "@rollup/plugin-node-resolve": "^13.0.0",
     "babel-jest": "^28.1.2",
-    "cz-conventional-changelog": "^3.0.1",
     "date-fns": "^2.22.1",
     "jest": "^28.1.2",
     "prettier": "^2.3.1",
@@ -44,10 +43,5 @@
     "barcode",
     "encode",
     "decode"
-  ],
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
-  }
+  ]
 }
