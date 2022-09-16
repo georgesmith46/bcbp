@@ -57,7 +57,7 @@ console.log(output);
 ## Decode
 
 ```ts
-decode(bcbp: string, referenceYear?: number ) => BoardingPassData
+decode(bcbp: string, referenceYear?: number) => BoardingPassData
 ```
 
 ### Example
