@@ -1,6 +1,7 @@
-[![License](https://badgen.net/npm/license/bcbp)](LICENSE)
-[![Bundlephobia](https://badgen.net/bundlephobia/minzip/bcbp)](https://bundlephobia.com/result?p=bcbp)
-[![Version](https://badgen.net/npm/v/bcbp)](https://npm.im/bcbp)
+![Build](https://img.shields.io/github/workflow/status/georgesmith46/bcbp/Release?style=for-the-badge)
+![License](https://img.shields.io/github/license/georgesmith46/bcbp?style=for-the-badge)
+![Bundlephobia](https://img.shields.io/bundlephobia/minzip/bcbp?style=for-the-badge)
+![Version](https://img.shields.io/npm/v/bcbp?style=for-the-badge)
 
 # BCBP
 
@@ -22,13 +23,9 @@ $ npm install bcbp
 
 ## Encode
 
-### Parameters
-
-- [BCBP object](#bcbp-object) - The object to be encoded. Any keys can be omitted.
-
-### Return value
-
-- [BCBP string](#bcbp-string) - This is **not** encoded into a barcode.
+```ts
+encode(data: BoardingPassData) => string
+```
 
 ### Example
 
@@ -59,14 +56,9 @@ console.log(output);
 
 ## Decode
 
-### Parameters
-
-- [BCBP string](#bcbp-string) - The string to be decoded.
-- [Reference Year](#reference-year) - Define a reference year for dates
-
-### Return value
-
-- [BCBP object](#bcbp-object) - This object schema matches the input of the `encode` method.
+```ts
+decode(bcbp: string, referenceYear?: number) => BoardingPassData
+```
 
 ### Example
 
@@ -81,9 +73,25 @@ console.log(output.passengerName);
 // DESMARAIS/LUC
 ```
 
-# BCBP Object
+### Reference Year
 
-An object which is be passed as input to the `encode` method and is the return value of the `decode` method.
+Define the year which is used when parsing date fields. If this is undefined, the current year is used.
+
+```js
+import { decode } from "bcbp";
+
+let output = decode(
+  "M1DESMARAIS/LUC       EABC123 YULFRAAC 0834 226F001A0025 100",
+  2010
+);
+
+console.log(output.legs[0].flightDate.toISOString());
+// "2010-08-14T00:00:00.000Z"
+```
+
+# BoardingPassData
+
+An object which is to be passed as input to the `encode` method and is the return value of the `decode` method.
 
 ```js
 const bcbpObject = {
@@ -194,30 +202,6 @@ const bcbpObject = {
 };
 ```
 
-# BCBP String
-
-A string which follows the IATA BCBP version 6 standard.
-
-```js
-const bcbpString =
-  "M1DESMARAIS/LUC       EABC123 YULFRAAC 0834 226F001A0025 100";
-```
-
-# Reference Year
-
-Define the year which is used when parsing date fields. If this is undefined, the current year is used.
-
-```js
-import { decode } from "bcbp";
-
-let output = decode(
-  "M1DESMARAIS/LUC       EABC123 YULFRAAC 0834 226F001A0025 100",
-  2010
-);
-
-console.log(output.legs[0].flightDate.toISOString());
-// "2010-08-14T00:00:00.000Z"
-```
 
 ## License
 
