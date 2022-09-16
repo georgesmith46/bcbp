@@ -18,7 +18,13 @@ class SectionDecoder {
     if (this.currentIndex >= barcodeLength) {
       return;
     }
-    const value = this.barcodeString.substr(this.currentIndex, length);
+    let value;
+    const start = this.currentIndex;
+    if (length === undefined) {
+      value = this.barcodeString.substring(start);
+    } else {
+      value = this.barcodeString.substring(start, start + length);
+    }
     this.currentIndex += length ?? barcodeLength;
     const trimmedValue = value.trimEnd();
     if (trimmedValue === "") {
