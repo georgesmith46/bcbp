@@ -73,6 +73,22 @@ console.log(output.passengerName);
 // DESMARAIS/LUC
 ```
 
+### Reference Year
+
+Define the year which is used when parsing date fields. If this is undefined, the current year is used.
+
+```js
+import { decode } from "bcbp";
+
+let output = decode(
+  "M1DESMARAIS/LUC       EABC123 YULFRAAC 0834 226F001A0025 100",
+  2010
+);
+
+console.log(output.legs[0].flightDate.toISOString());
+// "2010-08-14T00:00:00.000Z"
+```
+
 # BoardingPassData
 
 An object which is to be passed as input to the `encode` method and is the return value of the `decode` method.
@@ -186,30 +202,6 @@ const bcbpObject = {
 };
 ```
 
-# BCBP String
-
-A string which follows the IATA BCBP version 6 standard.
-
-```js
-const bcbpString =
-  "M1DESMARAIS/LUC       EABC123 YULFRAAC 0834 226F001A0025 100";
-```
-
-# Reference Year
-
-Define the year which is used when parsing date fields. If this is undefined, the current year is used.
-
-```js
-import { decode } from "bcbp";
-
-let output = decode(
-  "M1DESMARAIS/LUC       EABC123 YULFRAAC 0834 226F001A0025 100",
-  2010
-);
-
-console.log(output.legs[0].flightDate.toISOString());
-// "2010-08-14T00:00:00.000Z"
-```
 
 ## License
 
