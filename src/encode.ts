@@ -38,7 +38,7 @@ class SectionBuilder {
 
     if (length !== undefined) {
       if (valueLength > length) {
-        value = value.substr(0, length);
+        value = value.substring(0, length);
       } else if (valueLength < length) {
         for (let i = 0; i < length - valueLength; i++) {
           value += " ";
@@ -78,18 +78,16 @@ class SectionBuilder {
   }
 }
 
-export const encode = (data: BoardingPassData) => {
-  const meta: BoardingPassMetaData = {
+export const encode = (bcbp: BarcodedBoardingPass) => {
+  bcbp.meta = {
     formatCode: "M",
-    numberOfLegs: data.legs?.length ?? 0,
+    numberOfLegs: bcbp?.data?.legs?.length ?? 0,
     electronicTicketIndicator: "E",
     versionNumberIndicator: ">",
     versionNumber: 6,
     securityDataIndicator: "^",
+    ...bcbp.meta,
   };
-  const bcbp: BarcodedBoardingPass = {};
-  bcbp.data = data;
-  bcbp.meta = meta;
 
   const barcodeData = new SectionBuilder();
   if (bcbp.data?.legs === undefined || bcbp.data.legs.length === 0) {
