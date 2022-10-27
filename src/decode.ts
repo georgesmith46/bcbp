@@ -215,5 +215,5 @@ export const decode = (barcodeString: string, referenceYear?: number) => {
     }
   }
 
-  return bcbp.data;
+  return bcbp;
 };
