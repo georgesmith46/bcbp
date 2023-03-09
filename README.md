@@ -49,11 +49,11 @@ let output = encode({
       },
     ],
     passengerName: "DESMARAIS/LUC",
-  }
+  },
 });
 
 console.log(output);
-// M1DESMARAIS/LUC       EABC123 YULFRAAC 0834 226F001A0025 100
+// M1DESMARAIS/LUC       EABC123 YULFRAAC 0834 226F001A0025 106>60000
 ```
 
 ## Decode

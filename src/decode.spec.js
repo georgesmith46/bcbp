@@ -33,7 +33,7 @@ describe("decode", () => {
             },
           ],
           passengerName: "DESMARAIS/LUC",
-        }
+        },
       });
     });
   });
@@ -78,7 +78,7 @@ describe("decode", () => {
           securityDataType: "1",
           securityData:
             "GIWVC5EH7JNT684FVNJ91W2QA4DVN5J8K4F0L0GEQ3DF5TGBN8709HKT5D3DW3GBHFCVHMY7J5T6HFR41W2QA4DVN5J8K4F0L0GE",
-        }
+        },
       });
     });
   });
@@ -152,7 +152,7 @@ describe("decode", () => {
           securityDataType: "1",
           securityData:
             "GIWVC5EH7JNT684FVNJ91W2QA4DVN5J8K4F0L0GEQ3DF5TGBN8709HKT5D3DW3GBHFCVHMY7J5T6HFR41W2QA4DVN5J8K4F0L0GE",
-        }
+        },
       });
     });
   });
@@ -188,7 +188,7 @@ describe("decode", () => {
             },
           ],
           passengerName: "DESMARAIS/LUC",
-        }
+        },
       });
     });
   });
@@ -233,7 +233,7 @@ describe("decode", () => {
           securityDataType: "1",
           securityData:
             "GIWVC5EH7JNT684FVNJ91W2QA4DVN5J8K4F0L0GEQ3DF5TGBN8709HKT5D3DW3GBHFCVHMY7J5T6HFR41W2QA4DVN5J8K4F0L0GE",
-        }
+        },
       });
     });
 
@@ -274,7 +274,7 @@ describe("decode", () => {
           securityDataType: "1",
           securityData:
             "GIWVC5EH7JNT684FVNJ91W2QA4DVN5J8K4F0L0GEQ3DF5TGBN8709HKT5D3DW3GBHFCVHMY7J5T6HFR41W2QA4DVN5J8K4F0L0GE",
-        }
+        },
       });
     });
   });
