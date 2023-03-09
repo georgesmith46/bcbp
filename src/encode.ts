@@ -1,8 +1,4 @@
-import {
-  BarcodedBoardingPass,
-  BoardingPassData,
-  BoardingPassMetaData,
-} from "./types";
+import { BarcodedBoardingPass } from "./types";
 import { dateToDayOfYear, numberToHex } from "./utils";
 import * as LENGTHS from "./field-lengths";
 
