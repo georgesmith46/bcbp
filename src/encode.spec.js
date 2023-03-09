@@ -10,11 +10,11 @@ describe("encode", () => {
   });
   describe("minimal", () => {
     const expected =
-      "M1                    E                                   30>6002A                                         N",
+        "M1                    E                                   30>6002A                                         N",
       input = {
         data: {
           legs: [{ fastTrack: false }],
-        }
+        },
       };
     it(`should output ${expected}`, () => {
       expect(encode(input)).toEqual(expected);
@@ -22,7 +22,7 @@ describe("encode", () => {
   });
   describe("basic", () => {
     const expected =
-      "M1DESMARAIS/LUC       EABC123 YULFRAAC 0834 226F001A0025 106>60000",
+        "M1DESMARAIS/LUC       EABC123 YULFRAAC 0834 226F001A0025 106>60000",
       input = {
         data: {
           passengerName: "DESMARAIS/LUC",
@@ -40,7 +40,7 @@ describe("encode", () => {
               passengerStatus: "1",
             },
           ],
-        }
+        },
       };
     it(`should output ${expected}`, () => {
       expect(encode(input)).toEqual(expected);
@@ -48,7 +48,7 @@ describe("encode", () => {
   });
   describe("random", () => {
     const expected =
-      "M1DESMARAIS/LUC       EABC123    FRAAC      226F001A      3B>60B1W 6225BAC 2A   1234567890 1AC AC 1234567890123    20KY^164GIWVC5EH7JNT684FVNJ91W2QA4DVN5J8K4F0L0GEQ3DF5TGBN8709HKT5D3DW3GBHFCVHMY7J5T6HFR41W2QA4DVN5J8K4F0L0GE",
+        "M1DESMARAIS/LUC       EABC123    FRAAC      226F001A      3B>60B1W 6225BAC 2A   1234567890 1AC AC 1234567890123    20KY^164GIWVC5EH7JNT684FVNJ91W2QA4DVN5J8K4F0L0GEQ3DF5TGBN8709HKT5D3DW3GBHFCVHMY7J5T6HFR41W2QA4DVN5J8K4F0L0GE",
       input = {
         data: {
           passengerName: "DESMARAIS/LUC",
@@ -77,7 +77,7 @@ describe("encode", () => {
           securityDataType: 1,
           securityData:
             "GIWVC5EH7JNT684FVNJ91W2QA4DVN5J8K4F0L0GEQ3DF5TGBN8709HKT5D3DW3GBHFCVHMY7J5T6HFR41W2QA4DVN5J8K4F0L0GE",
-        }
+        },
       };
     it(`should output ${expected}`, () => {
       expect(encode(input)).toEqual(expected);
@@ -143,7 +143,7 @@ describe("encode", () => {
         securityDataType: 1,
         securityData:
           "GIWVC5EH7JNT684FVNJ91W2QA4DVN5J8K4F0L0GEQ3DF5TGBN8709HKT5D3DW3GBHFCVHMY7J5T6HFR41W2QA4DVN5J8K4F0L0GE",
-      }
+      },
     };
     it(`should output ${expected}`, () => {
       expect(encode(input)).toEqual(expected);
@@ -151,7 +151,7 @@ describe("encode", () => {
   });
   describe("no security data type", () => {
     const expected =
-      "M1DESMARAIS/LUC       EABC123 YULFRAAC 0834 226F001A0025 106>60000^164GIWVC5EH7JNT684FVNJ91W2QA4DVN5J8K4F0L0GEQ3DF5TGBN8709HKT5D3DW3GBHFCVHMY7J5T6HFR41W2QA4DVN5J8K4F0L0GE",
+        "M1DESMARAIS/LUC       EABC123 YULFRAAC 0834 226F001A0025 106>60000^164GIWVC5EH7JNT684FVNJ91W2QA4DVN5J8K4F0L0GEQ3DF5TGBN8709HKT5D3DW3GBHFCVHMY7J5T6HFR41W2QA4DVN5J8K4F0L0GE",
       input = {
         data: {
           passengerName: "DESMARAIS/LUC",
@@ -171,7 +171,7 @@ describe("encode", () => {
           ],
           securityData:
             "GIWVC5EH7JNT684FVNJ91W2QA4DVN5J8K4F0L0GEQ3DF5TGBN8709HKT5D3DW3GBHFCVHMY7J5T6HFR41W2QA4DVN5J8K4F0L0GE",
-        }
+        },
       };
     it(`should output ${expected}`, () => {
       expect(encode(input)).toEqual(expected);
@@ -182,7 +182,7 @@ describe("encode", () => {
       input = {
         data: {
           legs: [],
-        }
+        },
       };
     it(`should output ""`, () => {
       expect(encode(input)).toEqual(expected);
