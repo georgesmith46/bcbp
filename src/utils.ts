@@ -4,16 +4,14 @@ export const numberToHex = (n: number) =>
   n.toString(16).padStart(2, "0").toUpperCase();
 
 export const dateToDayOfYear = (date: Date, addYearPrefix = false) => {
-  const start = new Date(Date.UTC(date.getFullYear(), 0, 0));
-  const diff =
-    date.getTime() -
-    start.getTime() +
-    (start.getTimezoneOffset() - date.getTimezoneOffset()) * 60 * 1000;
   const oneDay = 1000 * 60 * 60 * 24;
-  const dayOfYear = Math.floor(diff / oneDay);
+  const dayOfYear =
+    (Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()) -
+      Date.UTC(date.getUTCFullYear(), 0, 0)) /
+    oneDay;
   let yearPrefix = "";
   if (addYearPrefix) {
-    yearPrefix = date.getFullYear().toString().slice(-1);
+    yearPrefix = date.getUTCFullYear().toString().slice(-1);
   }
   return `${yearPrefix}${dayOfYear.toString()}`;
 };

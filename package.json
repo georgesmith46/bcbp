@@ -9,7 +9,7 @@
   "scripts": {
     "build": "rollup -c",
     "test": "jest --testPathIgnorePatterns=\"/node_modules/\", \"/test/\"",
-    "test:timezone": "TZ=Europe/Berlin npm run test && TZ=America/Los_Angeles npm run test",
+    "test:timezone": "TZ=America/Santiago npm run test && TZ=Europe/Berlin npm run test && TZ=America/Los_Angeles npm run test",
     "test:smoke": "jest test/smoke.test.js",
     "release": "npx semantic-release",
     "release-dry-run": "npx semantic-release-github-pr --debug"
@@ -37,11 +37,5 @@
     "semantic-release-github-pr": "^6.0.1",
     "typescript": "^5.0.4"
   },
-  "keywords": [
-    "iata",
-    "boarding pass",
-    "barcode",
-    "encode",
-    "decode"
-  ]
+  "keywords": ["iata", "boarding pass", "barcode", "encode", "decode"]
 }
