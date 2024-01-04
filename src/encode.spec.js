@@ -22,7 +22,7 @@ describe("encode", () => {
   });
   describe("basic", () => {
     const expected =
-        "M1DESMARAIS/LUC       EABC123 YULFRAAC 0834 226F001A0025 106>60000",
+        "M1DESMARAIS/LUC       EABC123 YULFRAAC 0834 001F001A0025 106>60000",
       input = {
         data: {
           passengerName: "DESMARAIS/LUC",
@@ -33,7 +33,7 @@ describe("encode", () => {
               arrivalAirport: "FRA",
               operatingCarrierDesignator: "AC",
               flightNumber: "0834",
-              flightDate: new Date("2016-08-13T00:00:00.000Z"),
+              flightDate: new Date("2016-01-01T00:00:00.000Z"),
               compartmentCode: "F",
               seatNumber: "001A",
               checkInSequenceNumber: "0025",

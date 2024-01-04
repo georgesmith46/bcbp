@@ -81,7 +81,7 @@ export const decode = (barcodeString: string, referenceYear?: number) => {
     mainSection.getNextNumber(LENGTHS.NUMBER_OF_LEGS) ?? 0;
   bcbp.data.passengerName = mainSection.getNextString(LENGTHS.PASSENGER_NAME);
   bcbp.meta.electronicTicketIndicator = mainSection.getNextString(
-    LENGTHS.ELECTRONIC_TICKET_INDICATOR
+    LENGTHS.ELECTRONIC_TICKET_INDICATOR,
   );
 
   bcbp.data.legs = [];
@@ -91,67 +91,67 @@ export const decode = (barcodeString: string, referenceYear?: number) => {
   for (let legIndex = 0; legIndex < bcbp.meta.numberOfLegs; legIndex++) {
     const leg: Leg = {};
     leg.operatingCarrierPNR = mainSection.getNextString(
-      LENGTHS.OPERATING_CARRIER_PNR
+      LENGTHS.OPERATING_CARRIER_PNR,
     );
     leg.departureAirport = mainSection.getNextString(LENGTHS.DEPARTURE_AIRPORT);
     leg.arrivalAirport = mainSection.getNextString(LENGTHS.ARRIVAL_AIRPORT);
     leg.operatingCarrierDesignator = mainSection.getNextString(
-      LENGTHS.OPERATING_CARRIER_DESIGNATOR
+      LENGTHS.OPERATING_CARRIER_DESIGNATOR,
     );
     leg.flightNumber = mainSection.getNextString(LENGTHS.FLIGHT_NUMBER);
     leg.flightDate = mainSection.getNextDate(
       LENGTHS.FLIGHT_DATE,
       false,
-      referenceYear
+      referenceYear,
     );
     leg.compartmentCode = mainSection.getNextString(LENGTHS.COMPARTMENT_CODE);
     leg.seatNumber = mainSection.getNextString(LENGTHS.SEAT_NUMBER);
     leg.checkInSequenceNumber = mainSection.getNextString(
-      LENGTHS.CHECK_IN_SEQUENCE_NUMBER
+      LENGTHS.CHECK_IN_SEQUENCE_NUMBER,
     );
     leg.passengerStatus = mainSection.getNextString(LENGTHS.PASSENGER_STATUS);
 
     const conditionalSectionSize = mainSection.getNextSectionSize();
     const conditionalSection = new SectionDecoder(
-      mainSection.getNextString(conditionalSectionSize)
+      mainSection.getNextString(conditionalSectionSize),
     );
 
     if (!addedUniqueFields) {
       bcbp.meta.versionNumberIndicator = conditionalSection.getNextString(
-        LENGTHS.VERSION_NUMBER_INDICATOR
+        LENGTHS.VERSION_NUMBER_INDICATOR,
       );
       bcbp.meta.versionNumber = conditionalSection.getNextNumber(
-        LENGTHS.VERSION_NUMBER
+        LENGTHS.VERSION_NUMBER,
       );
 
       const sectionASize = conditionalSection.getNextSectionSize();
       const sectionA = new SectionDecoder(
-        conditionalSection.getNextString(sectionASize)
+        conditionalSection.getNextString(sectionASize),
       );
       bcbp.data.passengerDescription = sectionA.getNextString(
-        LENGTHS.PASSENGER_DESCRIPTION
+        LENGTHS.PASSENGER_DESCRIPTION,
       );
       bcbp.data.checkInSource = sectionA.getNextString(LENGTHS.CHECK_IN_SOURCE);
       bcbp.data.boardingPassIssuanceSource = sectionA.getNextString(
-        LENGTHS.BOARDING_PASS_ISSUANCE_SOURCE
+        LENGTHS.BOARDING_PASS_ISSUANCE_SOURCE,
       );
       bcbp.data.issuanceDate = sectionA.getNextDate(
         LENGTHS.ISSUANCE_DATE,
         true,
-        referenceYear
+        referenceYear,
       );
       bcbp.data.documentType = sectionA.getNextString(LENGTHS.DOCUMENT_TYPE);
       bcbp.data.boardingPassIssuerDesignator = sectionA.getNextString(
-        LENGTHS.BOARDING_PASS_ISSUER_DESIGNATOR
+        LENGTHS.BOARDING_PASS_ISSUER_DESIGNATOR,
       );
       bcbp.data.baggageTagNumber = sectionA.getNextString(
-        LENGTHS.BAGGAGE_TAG_NUMBER
+        LENGTHS.BAGGAGE_TAG_NUMBER,
       );
       bcbp.data.firstBaggageTagNumber = sectionA.getNextString(
-        LENGTHS.FIRST_BAGGAGE_TAG_NUMBER
+        LENGTHS.FIRST_BAGGAGE_TAG_NUMBER,
       );
       bcbp.data.secondBaggageTagNumber = sectionA.getNextString(
-        LENGTHS.SECOND_BAGGAGE_TAG_NUMBER
+        LENGTHS.SECOND_BAGGAGE_TAG_NUMBER,
       );
 
       addedUniqueFields = true;
@@ -159,28 +159,28 @@ export const decode = (barcodeString: string, referenceYear?: number) => {
 
     const sectionBSize = conditionalSection.getNextSectionSize();
     const sectionB = new SectionDecoder(
-      conditionalSection.getNextString(sectionBSize)
+      conditionalSection.getNextString(sectionBSize),
     );
     leg.airlineNumericCode = sectionB.getNextString(
-      LENGTHS.AIRLINE_NUMERIC_CODE
+      LENGTHS.AIRLINE_NUMERIC_CODE,
     );
     leg.serialNumber = sectionB.getNextString(LENGTHS.SERIAL_NUMBER);
     leg.selecteeIndicator = sectionB.getNextString(LENGTHS.SELECTEE_INDICATOR);
     leg.internationalDocumentationVerification = sectionB.getNextString(
-      LENGTHS.INTERNATIONAL_DOCUMENTATION_VERIFICATION
+      LENGTHS.INTERNATIONAL_DOCUMENTATION_VERIFICATION,
     );
     leg.marketingCarrierDesignator = sectionB.getNextString(
-      LENGTHS.MARKETING_CARRIER_DESIGNATOR
+      LENGTHS.MARKETING_CARRIER_DESIGNATOR,
     );
     leg.frequentFlyerAirlineDesignator = sectionB.getNextString(
-      LENGTHS.FREQUENT_FLYER_AIRLINE_DESIGNATOR
+      LENGTHS.FREQUENT_FLYER_AIRLINE_DESIGNATOR,
     );
     leg.frequentFlyerNumber = sectionB.getNextString(
-      LENGTHS.FREQUENT_FLYER_NUMBER
+      LENGTHS.FREQUENT_FLYER_NUMBER,
     );
     leg.idIndicator = sectionB.getNextString(LENGTHS.ID_INDICATOR);
     leg.freeBaggageAllowance = sectionB.getNextString(
-      LENGTHS.FREE_BAGGAGE_ALLOWANCE
+      LENGTHS.FREE_BAGGAGE_ALLOWANCE,
     );
     leg.fastTrack = sectionB.getNextBoolean();
 
@@ -190,27 +190,27 @@ export const decode = (barcodeString: string, referenceYear?: number) => {
   }
 
   bcbp.meta.securityDataIndicator = mainSection.getNextString(
-    LENGTHS.SECURITY_DATA_INDICATOR
+    LENGTHS.SECURITY_DATA_INDICATOR,
   );
   bcbp.data.securityDataType = mainSection.getNextString(
-    LENGTHS.SECURITY_DATA_TYPE
+    LENGTHS.SECURITY_DATA_TYPE,
   );
 
   const securitySectionSize = mainSection.getNextSectionSize();
   const securitySection = new SectionDecoder(
-    mainSection.getNextString(securitySectionSize)
+    mainSection.getNextString(securitySectionSize),
   );
   bcbp.data.securityData = securitySection.getNextString(LENGTHS.SECURITY_DATA);
 
-  if (bcbp.data.issuanceDate !== undefined && referenceYear === undefined) {
+  if (bcbp.data.issuanceDate !== undefined) {
+    const issuanceYear = bcbp.data.issuanceDate.getFullYear();
     for (let leg of bcbp.data.legs) {
       if (leg.flightDate !== undefined) {
         const dayOfYear = dateToDayOfYear(leg.flightDate);
-        leg.flightDate = dayOfYearToDate(
-          dayOfYear,
-          false,
-          bcbp.data.issuanceDate.getFullYear()
-        );
+        leg.flightDate = dayOfYearToDate(dayOfYear, false, issuanceYear);
+        if (leg.flightDate < bcbp.data.issuanceDate) {
+          leg.flightDate = dayOfYearToDate(dayOfYear, false, issuanceYear + 1);
+        }
       }
     }
   }
