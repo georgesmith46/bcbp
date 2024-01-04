@@ -42,7 +42,7 @@ describe("decode", () => {
       "M1DESMARAIS/LUC       EABC123    FRAAC      226F001A      3B>60B1W 6225BAC 2A   1234567890 1AC AC 1234567890123    20KY^164GIWVC5EH7JNT684FVNJ91W2QA4DVN5J8K4F0L0GEQ3DF5TGBN8709HKT5D3DW3GBHFCVHMY7J5T6HFR41W2QA4DVN5J8K4F0L0GE";
 
     it("should have the expected output", () => {
-      expect(decode(input)).toEqual({
+      expect(decode(input, 2016)).toEqual({
         meta: {
           formatCode: "M",
           numberOfLegs: 1,
@@ -87,7 +87,7 @@ describe("decode", () => {
       "M2DESMARAIS/LUC       EABC123 YULFRAAC 0834 226F001A0025 14D>6181WW6225BAC 00141234560032A0141234567890 1AC AC 1234567890123    20KYLX58ZDEF456 FRAGVALH 3664 227C012C0002 12E2A0140987654321 1AC AC 1234567890123    2PCNWQ^164GIWVC5EH7JNT684FVNJ91W2QA4DVN5J8K4F0L0GEQ3DF5TGBN8709HKT5D3DW3GBHFCVHMY7J5T6HFR41W2QA4DVN5J8K4F0L0GE";
 
     it("should have the expected output", () => {
-      expect(decode(input)).toEqual({
+      expect(decode(input, 2016)).toEqual({
         meta: {
           formatCode: "M",
           numberOfLegs: 2,
@@ -193,10 +193,9 @@ describe("decode", () => {
     });
   });
   describe("reference year", () => {
-    const input =
-      "M1DESMARAIS/LUC       EABC123    FRAAC      226F001A      3B>60B1W 6225BAC 2A   1234567890 1AC AC 1234567890123    20KY^164GIWVC5EH7JNT684FVNJ91W2QA4DVN5J8K4F0L0GEQ3DF5TGBN8709HKT5D3DW3GBHFCVHMY7J5T6HFR41W2QA4DVN5J8K4F0L0GE";
-
     it("should have the expected output when reference year is 2010", () => {
+      const input =
+        "M1DESMARAIS/LUC       EABC123    FRAAC      226F001A      3B>60B1W 0225BAC 2A   1234567890 1AC AC 1234567890123    20KY^164GIWVC5EH7JNT684FVNJ91W2QA4DVN5J8K4F0L0GEQ3DF5TGBN8709HKT5D3DW3GBHFCVHMY7J5T6HFR41W2QA4DVN5J8K4F0L0GE";
       expect(decode(input, 2010)).toEqual({
         meta: {
           formatCode: "M",
@@ -227,7 +226,7 @@ describe("decode", () => {
           passengerName: "DESMARAIS/LUC",
           passengerDescription: "1",
           checkInSource: "W",
-          issuanceDate: new Date("2006-08-13T00:00:00.000Z"),
+          issuanceDate: new Date("2010-08-13T00:00:00.000Z"),
           documentType: "B",
           boardingPassIssuerDesignator: "AC",
           securityDataType: "1",
@@ -238,6 +237,8 @@ describe("decode", () => {
     });
 
     it("should have the expected output when reference year is 2006", () => {
+      const input =
+        "M1DESMARAIS/LUC       EABC123    FRAAC      226F001A      3B>60B1W 6225BAC 2A   1234567890 1AC AC 1234567890123    20KY^164GIWVC5EH7JNT684FVNJ91W2QA4DVN5J8K4F0L0GEQ3DF5TGBN8709HKT5D3DW3GBHFCVHMY7J5T6HFR41W2QA4DVN5J8K4F0L0GE";
       expect(decode(input, 2006)).toEqual({
         meta: {
           formatCode: "M",
@@ -276,6 +277,16 @@ describe("decode", () => {
             "GIWVC5EH7JNT684FVNJ91W2QA4DVN5J8K4F0L0GEQ3DF5TGBN8709HKT5D3DW3GBHFCVHMY7J5T6HFR41W2QA4DVN5J8K4F0L0GE",
         },
       });
+    });
+  });
+  describe("flight date estimation", () => {
+    it("it should estimate the flight date year based on the issuance date", () => {
+      const input =
+        "M1DESMARAIS/LUC       EABC123 YULFRAAC 0834 001F001A0025 10D>607   136400";
+
+      expect(decode(input, 2023).data.legs[0].flightDate).toEqual(
+        new Date("2022-01-01T00:00:00.000Z"),
+      );
     });
   });
 });

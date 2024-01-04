@@ -13,13 +13,13 @@ export const dateToDayOfYear = (date: Date, addYearPrefix = false) => {
   if (addYearPrefix) {
     yearPrefix = date.getUTCFullYear().toString().slice(-1);
   }
-  return `${yearPrefix}${dayOfYear.toString()}`;
+  return `${yearPrefix}${dayOfYear.toString().padStart(3, "0")}`;
 };
 
 export const dayOfYearToDate = (
   dayOfYear: string,
   hasYearPrefix: boolean,
-  referenceYear?: number
+  referenceYear?: number,
 ) => {
   const currentYear = referenceYear ?? new Date(Date.now()).getUTCFullYear();
   let year = currentYear.toString();
