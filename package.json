@@ -11,8 +11,7 @@
     "test": "jest --testPathIgnorePatterns=\"/node_modules/\", \"/test/\"",
     "test:timezone": "TZ=America/Santiago npm run test && TZ=Europe/Berlin npm run test && TZ=America/Los_Angeles npm run test",
     "test:smoke": "jest test/smoke.test.js",
-    "release": "npx semantic-release",
-    "release-dry-run": "npx semantic-release-github-pr --debug"
+    "release": "npx semantic-release"
   },
   "author": {
     "name": "George Smith <georges8899@gmail.com>"
@@ -34,7 +33,6 @@
     "rollup": "^4.20.0",
     "rollup-plugin-ts": "3.2.0",
     "semantic-release": "^24.0.0",
-    "semantic-release-github-pr": "^6.0.3",
     "typescript": "^5.5.4"
   },
   "keywords": [
