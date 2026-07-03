@@ -30,16 +30,8 @@ class SectionBuilder {
       value = field;
     }
 
-    let valueLength = value.length;
-
     if (length !== undefined) {
-      if (valueLength > length) {
-        value = value.substring(0, length);
-      } else if (valueLength < length) {
-        for (let i = 0; i < length - valueLength; i++) {
-          value += " ";
-        }
-      }
+      value = value.substring(0, length).padEnd(length, " ");
     }
 
     this.output.push(value);
