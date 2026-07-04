@@ -6,7 +6,7 @@ describe("decode", () => {
     const input =
       "M1DESMARAIS/LUC       EABC123 YULFRAAC 0834 226F001A0025 106>60000";
 
-    const expectedFlightDate = parse("226Z", "DDDX", Date.now());
+    const expectedFlightDate = parse("226Z", "DDDX", Date.now(), {useAdditionalDayOfYearTokens: true});
 
     it(`should have expected output`, () => {
       expect(decode(input)).toEqual({
@@ -160,7 +160,7 @@ describe("decode", () => {
     const input =
       "M2DESMARAIS/LUC       E                                   06>60000ABC123 YULFRAAC 0834 226F001A0025 10200";
 
-    const expectedFlightDate = parse("226Z", "DDDX", Date.now());
+    const expectedFlightDate = parse("226Z", "DDDX", Date.now(), {useAdditionalDayOfYearTokens: true});
 
     it("should have the expected output", () => {
       expect(decode(input)).toEqual({
