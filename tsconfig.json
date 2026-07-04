@@ -6,6 +6,7 @@
     "declaration": true,
     "declarationMap": true,
     "strict": true,
+    "allowJs": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true
   }
