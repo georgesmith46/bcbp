@@ -1,5 +1,4 @@
 import { defineConfig } from "rolldown";
-import { dts } from "rolldown-plugin-dts";
 
 export default defineConfig([
   {
@@ -17,10 +16,5 @@ export default defineConfig([
         format: "es",
       },
     ],
-  },
-  {
-    input: "./src/index.ts",
-    output: { dir: "dist", entryFileNames: "index.esm.d.ts", format: "es" },
-    plugins: [dts()],
-  },
+  }
 ]);
