@@ -1,11 +1,14 @@
 {
   "compilerOptions": {
+    "rootDir": "src",
     "outDir": "dist/types",
     "declaration": true,
     "emitDeclarationOnly": true,
     "moduleResolution": "node",
     "target": "es2015",
-    "strict": true
+    "lib": ["es2019", "dom"],
+    "strict": true,
+    "ignoreDeprecations": "6.0"
   },
   "include": ["src/**/*.ts"],
   "exclude": ["src/**/*.spec.ts"]
