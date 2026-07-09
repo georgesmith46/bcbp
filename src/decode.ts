@@ -208,9 +208,6 @@ export const decode = (barcodeString: string, referenceYear?: number) => {
       if (leg.flightDate !== undefined) {
         const dayOfYear = dateToDayOfYear(leg.flightDate);
         leg.flightDate = dayOfYearToDate(dayOfYear, false, issuanceYear);
-        if (leg.flightDate < bcbp.data.issuanceDate) {
-          leg.flightDate = dayOfYearToDate(dayOfYear, false, issuanceYear + 1);
-        }
       }
     }
   }

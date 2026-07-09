@@ -21,19 +21,14 @@ export const dayOfYearToDate = (
   hasYearPrefix: boolean,
   referenceYear?: number,
 ) => {
-  const currentYear = referenceYear ?? new Date(Date.now()).getUTCFullYear();
-  let year = currentYear.toString();
-  let daysToAdd = dayOfYear;
-
-  if (hasYearPrefix) {
-    year = year.toString().slice(0, -1) + daysToAdd[0];
-    daysToAdd = daysToAdd.substring(1);
-
-    if (parseInt(year) - currentYear > 2) {
-      year = (parseInt(year) - 10).toString();
-    }
+  if (!referenceYear) {
+    referenceYear = new Date().getFullYear()
   }
-
-  const date = new Date(Date.UTC(parseInt(year), 0));
-  return new Date(date.setUTCDate(parseInt(daysToAdd)));
+  if (hasYearPrefix) {
+    const year = parseInt(dayOfYear.slice(0, 1));
+    dayOfYear = dayOfYear.slice(1);
+  }
+  const date = new Date(referenceYear, 0);
+  date.setDate(parseInt(dayOfYear));
+  return new Date(date.toISOString().split("T")[0]);
 };
